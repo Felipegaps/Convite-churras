@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Churras do Tutu - Edição Boho Geek</title>
+    
+    <!-- Scripts Externos -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Firebase Compat SDK (Para rodar 100% em qualquer navegador sem módulos) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Handlee&display=swap');
         
@@ -17,7 +25,6 @@
 
         .baby-font { font-family: 'Handlee', cursive; }
 
-        /* Paleta: Marrom (#8d6e63), Bege (#d7ccc8), Creme (#f5f5f5) */
         .earth-bg {
             background-color: #8d6e63;
             background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
@@ -42,13 +49,15 @@
             background-image: linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.1) 75%, transparent 75%, transparent);
             background-size: 1rem 1rem;
         }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body class="text-stone-800 overflow-x-hidden">
 
     <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative flex flex-col pb-10">
         
-        <!-- Header: Tons de Marrom e Bege -->
+        <!-- Header -->
         <section class="earth-bg text-stone-50 p-8 pt-12 pb-16 rounded-b-[3.5rem] relative overflow-hidden">
             <div class="absolute top-4 right-4 opacity-10 floating">
                 <i data-lucide="gamepad-2" style="width: 80px; height: 80px;"></i>
@@ -64,12 +73,12 @@
                 </h1>
                 <p class="text-stone-200 text-sm font-medium opacity-90">Celebrando o 1º Level do Arthur!</p>
                 
-                <!-- Cronómetro de Vida do Arthur -->
+                <!-- Cronómetro de Vida -->
                 <div class="mt-8 bg-stone-900/20 backdrop-blur-sm p-5 rounded-3xl border border-white/10 soft-shadow">
-                    <p class="text-[10px] uppercase font-black text-stone-200 mb-3 tracking-widest flex justify-center items-center gap-2">
+                    <p class="text-[10px] uppercase font-black text-stone-200 mb-3 tracking-widest flex justify-center items-center gap-2 text-center">
                         <i data-lucide="heart" class="w-3 h-3 fill-stone-100 text-stone-100"></i> Arthur Uptime
                     </p>
-                    <div id="arthur-life-timer" class="grid grid-cols-4 gap-2 text-center">
+                    <div class="grid grid-cols-4 gap-2 text-center">
                         <div class="bg-white/10 p-2 rounded-2xl">
                             <span id="life-days" class="text-xl font-black block leading-none">00</span>
                             <span class="text-[8px] uppercase font-bold opacity-70">Dias</span>
@@ -83,7 +92,7 @@
                             <span class="text-[8px] uppercase font-bold opacity-70">Min</span>
                         </div>
                         <div class="bg-white/10 p-2 rounded-2xl text-amber-200">
-                            <span id="life-secs" class="text-xl font-black block leading-none">00</span>
+                            <span id="life-secs" class="text-xl font-black block leading-none text-amber-200">00</span>
                             <span class="text-[8px] uppercase font-bold opacity-70">Seg</span>
                         </div>
                     </div>
@@ -91,7 +100,7 @@
             </div>
         </section>
 
-        <!-- Contagem Regressiva para o Evento -->
+        <!-- Contador do Evento -->
         <section class="px-6 -mt-8 relative z-20">
             <div class="bg-white rounded-3xl p-6 shadow-xl border border-stone-100 flex flex-col items-center">
                 <span class="text-[10px] uppercase font-black text-stone-400 mb-4 tracking-[0.2em] text-center">Contagem para o Deploy da Picanha</span>
@@ -119,7 +128,7 @@
             </div>
         </section>
 
-        <!-- Informações da Missão -->
+        <!-- Info & Google Calendar -->
         <section class="p-8 pb-4">
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="bg-stone-50 p-4 rounded-3xl border border-stone-100 flex items-center gap-3">
@@ -128,7 +137,7 @@
                     </div>
                     <div>
                         <p class="text-[8px] font-bold text-stone-400 uppercase tracking-tighter">Calendário</p>
-                        <p class="text-sm font-black text-stone-800">14 Março</p>
+                        <p class="text-sm font-black text-stone-800 text-center">14 Março</p>
                     </div>
                 </div>
                 <div class="bg-stone-50 p-4 rounded-3xl border border-stone-100 flex items-center gap-3">
@@ -137,31 +146,31 @@
                     </div>
                     <div>
                         <p class="text-[8px] font-bold text-stone-400 uppercase tracking-tighter">Início</p>
-                        <p class="text-sm font-black text-stone-800">12:30h</p>
+                        <p class="text-sm font-black text-stone-800 text-center">12:30h</p>
                     </div>
                 </div>
             </div>
             
-            <button id="btn-google" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-3 px-4 rounded-2xl border border-stone-200 flex items-center justify-center gap-2 transition-all active:scale-95 text-xs uppercase tracking-widest mb-2">
+            <button onclick="addToGoogleCalendar()" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-3 px-4 rounded-2xl border border-stone-200 flex items-center justify-center gap-2 transition-all active:scale-95 text-xs uppercase tracking-widest mb-2">
                 <i data-lucide="calendar-plus" class="w-4 h-4"></i> Adicionar à Agenda Google
             </button>
         </section>
 
-        <!-- MANUAL DO CONVIDADO -->
+        <!-- Protocolo de Segurança -->
         <section class="p-6">
             <div class="bg-white border-2 border-dashed border-stone-200 rounded-[2.5rem] p-7 relative">
                 <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border border-stone-200 rounded-full text-[10px] font-black text-stone-500 uppercase tracking-widest flex items-center gap-2">
                     <i data-lucide="shield-check" class="w-3 h-3"></i> Protocolo de Segurança
                 </div>
                 
-                <h4 class="text-center font-black text-stone-800 text-sm mb-6 uppercase tracking-tight">Manual de Visita ao Arthur</h4>
+                <h4 class="text-center font-black text-stone-800 text-sm mb-6 uppercase tracking-tight text-center">Visita ao Arthur</h4>
                 
                 <div class="space-y-6">
                     <div class="flex gap-4">
                         <div class="w-10 h-10 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-600 shrink-0">
                             <i data-lucide="ban" class="w-5 h-5"></i>
                         </div>
-                        <div class="text-[11px] text-stone-500 leading-relaxed">
+                        <div class="text-[11px] text-stone-500 leading-relaxed text-left">
                             <span class="font-black text-stone-700 uppercase">Sem Beijinhos:</span><br>
                             Não beijem o rosto ou as mãos do Arthur.
                         </div>
@@ -170,34 +179,24 @@
                         <div class="w-10 h-10 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-600 shrink-0">
                             <i data-lucide="hand" class="w-5 h-5"></i>
                         </div>
-                        <div class="text-[11px] text-stone-500 leading-relaxed">
-                            <span class="font-black text-stone-700 uppercase">Mãos de Arquiteto:</span><br>
-                            Lavar bem as mãos ao chegar. Teremos álcool disponível.
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-600 shrink-0">
-                            <i data-lucide="thermometer" class="w-5 h-5"></i>
-                        </div>
-                        <div class="text-[11px] text-stone-500 leading-relaxed">
-                            <span class="font-black text-stone-700 uppercase">Health Check:</span><br>
-                            Qualquer sintoma de gripe, pedimos para não comparecer.
+                        <div class="text-[11px] text-stone-500 leading-relaxed text-left">
+                            <span class="font-black text-stone-700 uppercase">Higiene:</span><br>
+                            Lavar as mãos ao chegar. Teremos álcool disponível.
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Quiz e Monitor de KI -->
+        <!-- Games -->
         <section class="p-6 pt-0 space-y-4">
             <div class="bg-stone-800 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden text-center">
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-80 text-stone-400">Desafio Bebé Geek</p>
-                <h5 class="text-sm font-bold mb-6">Qual é o signo do Arthur (Nasc. 24/12)?</h5>
-                <div class="grid grid-cols-2 gap-3" id="quiz-options">
-                    <button id="quiz-correct" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black transition-all border border-white/20">Capricórnio</button>
-                    <button id="quiz-wrong" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black transition-all border border-white/20">Aquário</button>
+                <p class="text-sm font-bold mb-4">Qual é o signo do Arthur (Nasc. 24/12)?</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="checkQuiz(true, this)" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black transition-all border border-white/20">Capricórnio</button>
+                    <button onclick="checkQuiz(false, this)" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black transition-all border border-white/20">Aquário</button>
                 </div>
-                <div id="quiz-result" class="hidden text-[10px] font-black mt-4 uppercase animate-pulse text-amber-200">
+                <div id="quiz-result" class="hidden text-[10px] font-black mt-4 uppercase text-amber-200">
                     ✨ Success: Capricórnio detetado! ♑
                 </div>
             </div>
@@ -207,7 +206,7 @@
                 <div class="h-8 bg-stone-50 rounded-2xl p-1.5 border border-stone-100 mb-6">
                     <div id="power-bar" class="h-full bg-stone-700 rounded-xl transition-all duration-500 progress-pixel" style="width: 20%"></div>
                 </div>
-                <button id="btn-boost" class="w-full py-4 bg-stone-800 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] active:scale-95 transition-all shadow-lg">
+                <button onclick="boostPower()" class="w-full py-4 bg-stone-800 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] active:scale-95 transition-all shadow-lg">
                     Elevar o meu KI
                 </button>
                 <p id="power-text" class="text-[10px] font-bold text-stone-400 mt-3 uppercase italic">Nível de Fome: Baixo</p>
@@ -218,10 +217,10 @@
         <section class="p-6">
             <div class="bg-stone-100 rounded-[3rem] p-8 text-stone-800 relative overflow-hidden border border-stone-200">
                 <div class="relative z-10 text-center">
-                    <h3 class="text-xs font-black text-stone-500 uppercase tracking-widest mb-6 italic text-center">Acesso à Base 101</h3>
+                    <h3 class="text-xs font-black text-stone-500 uppercase tracking-widest mb-6 italic text-center text-center">Confirmar Missão</h3>
                     <div id="rsvp-form-box" class="space-y-4">
                         <input type="text" id="guest-name" placeholder="Insira o seu Nome" class="w-full p-5 bg-white border border-stone-200 rounded-3xl focus:border-stone-800 outline-none text-sm font-bold text-stone-800 placeholder:text-stone-300 text-center">
-                        <button id="btn-rsvp" class="w-full bg-stone-800 text-white font-black py-5 rounded-3xl shadow-xl transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
+                        <button onclick="sendRSVP()" class="w-full bg-stone-800 text-white font-black py-5 rounded-3xl shadow-xl transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
                             <i data-lucide="check-circle-2" class="text-stone-200"></i> Confirmar Presença
                         </button>
                     </div>
@@ -236,7 +235,7 @@
             </div>
         </section>
 
-        <!-- Localização -->
+        <!-- Waze -->
         <section class="p-6 space-y-4">
             <div class="bg-stone-50 rounded-[2.5rem] p-7 border border-stone-100">
                 <div class="flex items-center gap-5 mb-6">
@@ -245,8 +244,8 @@
                     </div>
                     <div class="text-left">
                         <p class="text-[10px] font-black text-stone-400 uppercase tracking-widest">Coordenadas</p>
-                        <p class="font-black text-stone-800 text-sm">Rua Anacleto, 101</p>
-                        <p class="text-stone-600 font-black text-xs uppercase mt-0.5 leading-none">V. Isolina Mazzei - Apto 13</p>
+                        <p class="font-black text-stone-800 text-sm italic">Rua Anacleto, 101</p>
+                        <p class="text-stone-600 font-black text-xs uppercase mt-0.5 leading-none">Vila Isolina Mazzei - Apto 13</p>
                     </div>
                 </div>
                 <a href="https://waze.com/ul?q=Rua%20Anacleto%20101%20Vila%20Isolina%20Mazzei" target="_blank" class="w-full bg-white text-stone-800 font-black text-[10px] uppercase py-4 rounded-2xl flex items-center justify-center gap-2 active:scale-95 shadow-sm border border-stone-200 tracking-widest">
@@ -254,24 +253,21 @@
                     Navegar via Waze
                 </a>
             </div>
-            <p class="text-center text-stone-300 text-[9px] font-black uppercase tracking-[0.4em] mt-8 baby-font">Incendeie o seu coração na Casa 101</p>
+            <p class="text-center text-stone-300 text-[9px] font-black uppercase tracking-[0.4em] mt-8 baby-font text-center">Incendeie o seu coração na Casa 101</p>
         </section>
     </div>
 
-    <!-- Scripts do Sistema -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-        // Configurações
+    <!-- Scripts de Lógica -->
+    <script>
+        // Inicialização do Firebase Compat
         const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'portal-eventos-casa-101';
 
-        signInAnonymously(auth).catch(e => console.error("Firebase Login Revoked", e));
+        // Autenticação Anônima
+        auth.signInAnonymously().catch(e => console.error("Firebase Login Error", e));
 
         // --- RELÓGIOS ---
         const birthDate = new Date("2025-12-24T21:05:00").getTime();
@@ -289,45 +285,47 @@
 
             // Countdown para o Churrasco
             const eventDiff = eventDate - now;
+            const eventEl = document.getElementById('event-countdown');
             if (eventDiff > 0) {
                 document.getElementById('event-days').innerText = Math.floor(eventDiff / (1000 * 60 * 60 * 24));
                 document.getElementById('event-hours').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
                 document.getElementById('event-mins').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
                 document.getElementById('event-secs').innerText = String(Math.floor((eventDiff % (1000 * 60)) / 1000)).padStart(2, '0');
             } else {
-                document.getElementById('event-countdown').innerHTML = "<p class='text-stone-600 font-black italic baby-font'>QUEST COMPLETA - BORA COMER! 🔥</p>";
+                eventEl.innerHTML = "<p class='text-stone-600 font-black italic baby-font'>BORA COMER! 🔥</p>";
             }
         }
 
+        // Loop principal do relógio
         setInterval(updateTimers, 1000);
         updateTimers();
 
-        // --- INTERAÇÕES ---
-        window.addToGoogleCalendar = () => {
+        // --- INTERAÇÕES GLOBAIS ---
+        function addToGoogleCalendar() {
             const baseUrl = "https://www.google.com/calendar/render?action=TEMPLATE";
             const event = {
                 text: "Churras do Tutu - Casa 101",
                 dates: "20260314T153000Z/20260314T213000Z",
-                details: "Churrasco de celebração do 1º mês do Arthur! 👶🔥\n\nProtocolos de Segurança:\n- Não beijar o rosto ou mãos do bebê.\n- Lavar bem as mãos ao chegar.\n- Se estiver com qualquer sintoma de gripe, pedimos para não comparecer.\n\nIncendeie seu coração!",
+                details: "Churrasco do Arthur! 👶🔥\n\nProtocolos:\n- Não beijar o bebê.\n- Higiene das mãos.",
                 location: "Rua Anacleto, 101, Vila Isolina Mazzei, São Paulo, SP",
             };
-            const url = `${baseUrl}&text=${encodeURIComponent(event.text)}&dates=${event.dates}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
+            const url = baseUrl + "&text=" + encodeURIComponent(event.text) + "&dates=" + event.dates + "&details=" + encodeURIComponent(event.details) + "&location=" + encodeURIComponent(event.location);
             window.open(url, '_blank');
-        };
+        }
 
-        window.checkQuizCorrect = (btn) => {
-            btn.classList.add('bg-stone-500', 'text-white', 'border-stone-600');
-            document.getElementById('quiz-result').classList.remove('hidden');
-            document.getElementById('quiz-options').style.pointerEvents = 'none';
-        };
-
-        window.checkQuizWrong = (btn) => {
-            btn.classList.add('bg-stone-300', 'text-stone-800', 'border-stone-400');
-            setTimeout(() => btn.classList.remove('bg-stone-300', 'text-stone-800', 'border-stone-400'), 500);
-        };
+        function checkQuiz(isCorrect, btn) {
+            if (isCorrect) {
+                btn.style.backgroundColor = "#5d4037";
+                btn.style.color = "white";
+                document.getElementById('quiz-result').classList.remove('hidden');
+            } else {
+                btn.style.backgroundColor = "#d7ccc8";
+                setTimeout(() => btn.style.backgroundColor = "", 500);
+            }
+        }
 
         let kiLevel = 20;
-        window.boostPower = () => {
+        function boostPower() {
             kiLevel += 20;
             if (kiLevel > 100) kiLevel = 100;
             const bar = document.getElementById('power-bar');
@@ -335,62 +333,41 @@
             bar.style.width = kiLevel + '%';
             if (kiLevel >= 100) {
                 txt.innerText = "Nível de Fome: MAIS DE 8.000!!!";
-                bar.classList.add('bg-stone-900');
+                bar.style.backgroundColor = "#292524";
             } else if (kiLevel > 60) {
                 txt.innerText = "Nível de Fome: ÉPICO";
             }
-        };
+        }
 
-        window.sendRSVP = async () => {
+        async function sendRSVP() {
             const nameEl = document.getElementById('guest-name');
             const name = nameEl.value.trim();
-            if (!name) {
-                nameEl.classList.add('border-stone-400');
-                setTimeout(() => nameEl.classList.remove('border-stone-400'), 1000);
-                return;
-            }
-
-            const btn = document.getElementById('btn-rsvp');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="animate-spin w-4 h-4" data-lucide="loader-2"></i>';
-            lucide.createIcons();
+            if (!name) return alert("Insira o seu nome!");
 
             try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'rsvps'), {
-                    eventId: 'churras-do-tutu-14-mar',
+                // Caminho rigoroso para dados públicos do artefato
+                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('rsvps').add({
                     userName: name,
                     kiLevel: kiLevel,
-                    timestamp: new Date().toISOString()
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 document.getElementById('rsvp-form-box').classList.add('hidden');
                 document.getElementById('rsvp-success').classList.remove('hidden');
-                lucide.createIcons();
 
                 const phone = "5511983929914";
-                const text = encodeURIComponent(`[CONFIRMAÇÃO CHURRAS DO TUTU]\nOlá, Arthur! Vou participar na tua quest!\n\nSoldado: ${name}\nKI de Fome: ${kiLevel > 80 ? '8000+' : kiLevel + '%'}\n\nEstarei aí na Base 101 no dia 14! 🔥`);
-                
-                setTimeout(() => {
-                    window.location.href = `https://wa.me/${phone}?text=${text}`;
-                }, 2000);
-
-            } catch (e) { 
+                const text = encodeURIComponent("Confirmado no Churras do Tutu!\nNome: " + name + "\nKI: " + (kiLevel >= 100 ? "8000+" : kiLevel + "%"));
+                setTimeout(() => window.location.href = "https://wa.me/" + phone + "?text=" + text, 2000);
+            } catch (e) {
                 console.error(e);
-                btn.disabled = false;
-                btn.innerHTML = 'Confirmar Presença';
-                lucide.createIcons();
+                alert("Erro ao gravar. Tente novamente.");
             }
+        }
+
+        // Inicializar ícones
+        window.onload = function() {
+            lucide.createIcons();
         };
-
-        // Atribuir funções ao window para o HTML ter acesso (Importante!)
-        window.addToGoogleCalendar = window.addToGoogleCalendar;
-        document.getElementById('btn-google').addEventListener('click', window.addToGoogleCalendar);
-        document.getElementById('quiz-correct').addEventListener('click', function() { window.checkQuizCorrect(this); });
-        document.getElementById('quiz-wrong').addEventListener('click', function() { window.checkQuizWrong(this); });
-        document.getElementById('btn-boost').addEventListener('click', window.boostPower);
-        document.getElementById('btn-rsvp').addEventListener('click', window.sendRSVP);
-
-        lucide.createIcons();
     </script>
 </body>
 </html>
