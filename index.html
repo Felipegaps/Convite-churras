@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Churras do Tutu - Edição Boho Geek</title>
+    <title>Churras do Tutu - Edição Boho Geek Animada</title>
     
     <!-- Scripts de UI -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,25 +19,58 @@
         }
         .baby-font { font-family: 'Handlee', cursive; }
         
+        /* Paleta Arthur: Marrom (#8d6e63), Bege (#d7ccc8) */
         .earth-bg {
             background-color: #8d6e63;
             background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
                               radial-gradient(circle at 80% 70%, rgba(215, 204, 200, 0.2) 0%, transparent 30%);
         }
-        .soft-shadow {
-            box-shadow: 0 10px 25px -5px rgba(141, 110, 99, 0.1), 0 8px 10px -6px rgba(141, 110, 99, 0.1);
+
+        /* ANIMAÇÕES CUSTOMIZADAS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        .animate-fade-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .shimmer-effect {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .animate-heart {
+            animation: heartbeat 1.5s infinite ease-in-out;
+        }
+
         .floating { animation: floating 4s ease-in-out infinite; }
         @keyframes floating {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
         }
+
         .progress-pixel {
             background-image: linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.1) 75%, transparent 75%, transparent);
             background-size: 1rem 1rem;
         }
-        .hidden { display: none; }
 
         #game-container {
             width: 100%;
@@ -49,11 +82,8 @@
             border: 2px solid #d7ccc8;
             touch-action: none;
         }
-        #game-canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body class="text-stone-800 overflow-x-hidden">
@@ -66,34 +96,38 @@
                 <i data-lucide="gamepad-2" style="width: 80px; height: 80px;"></i>
             </div>
             
-            <div class="relative z-10 text-center flex flex-col items-center">
-                <div class="inline-flex items-center gap-2 bg-stone-900/20 backdrop-blur-md text-stone-100 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-stone-100/20">
+            <div class="relative z-10 flex flex-col items-center animate-fade-up">
+                <div class="inline-flex items-center gap-2 bg-stone-900/20 backdrop-blur-md text-stone-100 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-stone-100/20 overflow-hidden relative">
+                    <div class="absolute inset-0 shimmer-effect"></div>
                     <i data-lucide="sparkles" class="w-3 h-3 text-amber-200"></i> Missão: Churras do Tutu
                 </div>
                 
-                <h1 class="text-4xl font-black mb-2 baby-font tracking-tight text-white">Churras do <span class="text-stone-200">Tutu</span></h1>
-                <p class="text-stone-200 text-sm font-medium opacity-90 text-center">Preparem o apetite para o dia 14/03!</p>
+                <h1 class="text-4xl font-black mb-2 baby-font tracking-tight text-white drop-shadow-md">
+                    Churras do <span class="text-stone-200">Tutu</span>
+                </h1>
+                <p class="text-stone-200 text-sm font-medium opacity-90">Incendeie o seu coração! 🔥</p>
                 
+                <!-- ARTHUR UPTIME -->
                 <div class="mt-8 bg-stone-900/20 backdrop-blur-sm p-5 rounded-3xl border border-white/10 soft-shadow w-full">
                     <p class="text-[10px] uppercase font-black text-stone-200 mb-3 tracking-widest flex justify-center items-center gap-2">
-                        <i data-lucide="heart" class="w-3 h-3 fill-stone-100 text-stone-100"></i> Arthur Uptime
+                        <i data-lucide="heart" class="w-3 h-3 fill-stone-100 text-stone-100 animate-heart"></i> Arthur Uptime
                     </p>
                     <div class="grid grid-cols-4 gap-2">
                         <div class="bg-white/10 p-2 rounded-2xl">
-                            <span id="life-days" class="text-xl font-black block leading-none text-white text-center">00</span>
+                            <span id="life-days" class="text-xl font-black block leading-none text-white">00</span>
                             <span class="text-[8px] uppercase font-bold opacity-70">Dias</span>
                         </div>
                         <div class="bg-white/10 p-2 rounded-2xl">
-                            <span id="life-hours" class="text-xl font-black block leading-none text-white text-center">00</span>
-                            <span class="text-[8px] uppercase font-bold opacity-70 text-center">Hrs</span>
+                            <span id="life-hours" class="text-xl font-black block leading-none text-white">00</span>
+                            <span class="text-[8px] uppercase font-bold opacity-70">Hrs</span>
                         </div>
                         <div class="bg-white/10 p-2 rounded-2xl">
-                            <span id="life-mins" class="text-xl font-black block leading-none text-white text-center">00</span>
-                            <span class="text-[8px] uppercase font-bold opacity-70 text-center">Min</span>
+                            <span id="life-mins" class="text-xl font-black block leading-none text-white">00</span>
+                            <span class="text-[8px] uppercase font-bold opacity-70 text-center text-white">Min</span>
                         </div>
-                        <div class="bg-white/10 p-2 rounded-2xl text-amber-200 font-bold">
-                            <span id="life-secs" class="text-xl block leading-none text-center">00</span>
-                            <span class="text-[8px] uppercase opacity-70 text-center text-white">Seg</span>
+                        <div class="bg-white/10 p-2 rounded-2xl text-amber-200 font-bold border border-amber-200/20">
+                            <span id="life-secs" class="text-xl block leading-none">00</span>
+                            <span class="text-[8px] uppercase opacity-70">Seg</span>
                         </div>
                     </div>
                 </div>
@@ -101,8 +135,8 @@
         </section>
 
         <!-- EVENT COUNTDOWN -->
-        <section class="px-6 -mt-8 relative z-20">
-            <div class="bg-white rounded-3xl p-6 shadow-xl border border-stone-100 flex flex-col items-center">
+        <section class="px-6 -mt-8 relative z-20 animate-fade-up delay-1">
+            <div class="bg-white rounded-3xl p-6 shadow-xl border border-stone-100 flex flex-col items-center transform hover:scale-[1.02] transition-transform">
                 <span class="text-[10px] uppercase font-black text-stone-400 mb-4 tracking-[0.2em] text-center italic">Tempo para o Churrasco</span>
                 <div id="event-timer-container" class="flex justify-around items-center w-full max-w-[280px]">
                     <div class="text-center">
@@ -129,28 +163,28 @@
         </section>
 
         <!-- MINI JOGO -->
-        <section class="p-6">
+        <section class="p-6 animate-fade-up delay-2">
             <div class="bg-stone-50 border border-stone-200 rounded-[2rem] p-4 soft-shadow">
                 <div class="flex items-center justify-between mb-3 px-2">
                     <div class="flex flex-col">
-                        <span class="text-[10px] font-black text-stone-400 uppercase tracking-widest leading-none">Game Center</span>
-                        <h4 class="font-bold text-stone-800 text-sm">Missão: Proteger o Arthur</h4>
+                        <span class="text-[10px] font-black text-stone-400 uppercase tracking-widest leading-none">Minigame</span>
+                        <h4 class="font-bold text-stone-800 text-sm">Proteger o Arthur</h4>
                     </div>
-                    <div id="game-score-box" class="bg-stone-800 text-white px-3 py-1 rounded-full text-xs font-black">
-                        PONTOS: <span id="game-score">20</span>
+                    <div id="game-score-box" class="bg-stone-800 text-white px-3 py-1 rounded-full text-xs font-black ring-4 ring-stone-100">
+                        ENERGIA: <span id="game-score">20</span>
                     </div>
                 </div>
                 
                 <div id="game-container">
                     <canvas id="game-canvas"></canvas>
-                    <div id="game-overlay" class="absolute inset-0 bg-stone-900/80 flex flex-col items-center justify-center text-white p-6 text-center z-30 transition-all duration-300">
+                    <div id="game-overlay" class="absolute inset-0 bg-stone-900/80 flex flex-col items-center justify-center text-white p-6 text-center z-30">
                         <div id="overlay-content">
                             <i data-lucide="play" class="w-12 h-12 mb-4 text-amber-200 fill-amber-200 mx-auto cursor-pointer" onclick="window.startGame()"></i>
                             <h5 class="font-black text-lg uppercase mb-2">Treino de Segurança</h5>
                             <p class="text-[10px] opacity-80 uppercase tracking-widest mb-4 leading-relaxed">
-                                Apanhe 🥩 e 🍼<br>Fuja dos 🦠 e 💋 (Beijos)!<br>Meta: 100 pontos para vencer!
+                                Apanhe 🥩 e 🍼<br>Fuja dos 🦠 e 💋 (Beijos)!<br>Alvo: 100 pontos.
                             </p>
-                            <button onclick="window.startGame()" class="bg-stone-100 text-stone-900 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Iniciar Quest</button>
+                            <button onclick="window.startGame()" class="bg-stone-100 text-stone-900 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white transition-colors">Iniciar Quest</button>
                         </div>
                     </div>
                 </div>
@@ -158,7 +192,7 @@
         </section>
 
         <!-- Ações e Links -->
-        <section class="px-8 pb-4 space-y-3">
+        <section class="px-8 pb-4 space-y-3 animate-fade-up delay-3">
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-stone-50 p-4 rounded-3xl border border-stone-100 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-stone-600 shadow-sm"><i data-lucide="calendar"></i></div>
@@ -185,25 +219,25 @@
             </a>
         </section>
 
-        <!-- Protocolo de Segurança -->
-        <section class="p-6">
+        <!-- Protocolo -->
+        <section class="p-6 animate-fade-up">
             <div class="bg-white border-2 border-dashed border-stone-200 rounded-[2.5rem] p-7">
                 <h4 class="font-black text-stone-800 text-sm mb-5 uppercase tracking-tight text-center">Protocolo de Cuidado</h4>
                 <div class="space-y-4">
                     <div class="flex gap-4 items-center">
                         <div class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-stone-600 shrink-0"><i data-lucide="ban"></i></div>
-                        <p class="text-[11px] text-stone-600"><strong>Não beije o Arthur:</strong> Nem rosto, nem mãos. Sistema imunológico em <i>beta</i>.</p>
+                        <p class="text-[11px] text-stone-600"><strong>Não beije o Arthur:</strong> Nem rosto, nem mãos. Sistema em <i>beta</i>.</p>
                     </div>
                     <div class="flex gap-4 items-center">
                         <div class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-stone-600 shrink-0"><i data-lucide="hand"></i></div>
-                        <p class="text-[11px] text-stone-600"><strong>Higiene Máxima:</strong> Lavar bem as mãos ao chegar na base.</p>
+                        <p class="text-[11px] text-stone-600"><strong>Higiene:</strong> Lavar as mãos ao chegar na base.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- RSVP -->
-        <section class="p-6">
+        <section class="p-6 animate-fade-up">
             <div class="bg-stone-100 rounded-[3rem] p-8 text-center border border-stone-200">
                 <h3 class="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-6 italic">Confirmar Presença</h3>
                 <div id="rsvp-form-box" class="space-y-4 text-center">
@@ -222,17 +256,17 @@
         </section>
 
         <!-- Localização -->
-        <section class="p-6 space-y-4 text-center">
+        <section class="p-6 space-y-4 animate-fade-up">
             <div class="bg-stone-50 rounded-[2.5rem] p-7 border border-stone-100 text-left">
                 <div class="flex items-center gap-5">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-stone-700 shadow-sm border border-stone-100 shrink-0"><i data-lucide="map-pin"></i></div>
+                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-stone-700 shadow-sm shrink-0"><i data-lucide="map-pin"></i></div>
                     <div>
                         <p class="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">Coordenadas</p>
-                        <p class="font-black text-stone-800 text-sm">Rua Anacleto, 101</p>
+                        <p class="font-black text-stone-800 text-sm leading-tight italic text-stone-600">Rua Anacleto, 101</p>
                         <p class="text-stone-600 font-bold text-[10px] uppercase leading-none mt-1">Vila Isolina Mazzei - Apto 13</p>
                     </div>
                 </div>
-                <a href="https://waze.com/ul?q=Rua%20Anacleto%20101%20Vila%20Isolina%20Mazzei" target="_blank" class="w-full bg-white text-stone-800 font-black text-[10px] uppercase py-4 rounded-2xl flex items-center justify-center gap-2 mt-6 active:scale-95 shadow-sm border border-stone-200">
+                <a href="https://waze.com/ul?q=Rua%20Anacleto%20101%20Vila%20Isolina%20Mazzei" target="_blank" class="w-full bg-white text-stone-800 font-black text-[10px] uppercase py-4 rounded-2xl flex items-center justify-center gap-2 mt-6 active:scale-95 shadow-sm border border-stone-200 tracking-widest transition-all">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Waze_icon.svg" class="w-4 h-4" alt="Waze"> Ir via Waze
                 </a>
             </div>
@@ -240,7 +274,6 @@
         </section>
     </div>
 
-    <!-- LOGICA JAVASCRIPT -->
     <script>
         const ARTHUR_BIRTH = new Date("2025-12-24T21:05:00").getTime();
         const EVENT_DATE = new Date("2026-03-14T12:30:00").getTime();
@@ -248,18 +281,22 @@
         function tick() {
             const now = new Date().getTime();
             const lifeDiff = now - ARTHUR_BIRTH;
-            document.getElementById('life-days').innerText = Math.floor(lifeDiff / (1000 * 60 * 60 * 24));
-            document.getElementById('life-hours').innerText = String(Math.floor((lifeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-            document.getElementById('life-mins').innerText = String(Math.floor((lifeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-            document.getElementById('life-secs').innerText = String(Math.floor((lifeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+            if(document.getElementById('life-days')){
+                document.getElementById('life-days').innerText = Math.floor(lifeDiff / (1000 * 60 * 60 * 24));
+                document.getElementById('life-hours').innerText = String(Math.floor((lifeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById('life-mins').innerText = String(Math.floor((lifeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById('life-secs').innerText = String(Math.floor((lifeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+            }
 
             const eventDiff = EVENT_DATE - now;
             const container = document.getElementById('event-timer-container');
             if (eventDiff > 0) {
-                document.getElementById('event-days').innerText = Math.floor(eventDiff / (1000 * 60 * 60 * 24));
-                document.getElementById('event-hours').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-                document.getElementById('event-mins').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                document.getElementById('event-secs').innerText = String(Math.floor((eventDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+                if(document.getElementById('event-days')){
+                    document.getElementById('event-days').innerText = Math.floor(eventDiff / (1000 * 60 * 60 * 24));
+                    document.getElementById('event-hours').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                    document.getElementById('event-mins').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                    document.getElementById('event-secs').innerText = String(Math.floor((eventDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+                }
             } else if(container) {
                 container.innerHTML = "<p class='text-stone-600 font-black baby-font text-xl italic'>BRASEIRO ATIVO! 🔥</p>";
             }
@@ -268,7 +305,7 @@
         window.addToGoogleCalendar = function() {
             const text = "Churras do Tutu - Casa 101";
             const dates = "20260314T153000Z/20260314T213000Z";
-            const details = "Protocolos Arthur: Não beijar o bebê e higiene das mãos.";
+            const details = "Celebração do Arthur! Protocolos: Não beijar o bebê e higiene das mãos.";
             const loc = "Rua Anacleto, 101, Vila Isolina Mazzei, SP";
             window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(text)}&dates=${dates}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(loc)}`, '_blank');
         };
@@ -279,8 +316,8 @@
             document.getElementById('rsvp-form-box').classList.add('hidden');
             document.getElementById('rsvp-success').classList.remove('hidden');
             const phone = "5511983929914";
-            const msg = encodeURIComponent(`[QUEST CONFIRMADA]\nFala Arquiteto! Confirmei presença no Churras do Tutu!\n\nConvidado: ${name}\n\nEstarei na Base 101 no dia 14 de Março! 🔥`);
-            setTimeout(() => window.location.href = `https://wa.me/${phone}?text=${msg}`, 1500);
+            const message = encodeURIComponent(`[QUEST CONFIRMADA]\nFala Arquiteto! Confirmei minha presença no Churras do Tutu!\n\nNome: ${name}\n\nEstarrei na Base 101 no dia 14 de Março! 🔥`);
+            setTimeout(() => window.location.href = `https://wa.me/${phone}?text=${message}`, 1500);
         };
 
         // --- SISTEMA DO JOGO ---
@@ -306,7 +343,7 @@
                 <i data-lucide="play" class="w-12 h-12 mb-4 text-amber-200 fill-amber-200 mx-auto cursor-pointer" onclick="window.startGame()"></i>
                 <h5 class="font-black text-lg uppercase mb-2 text-white">Treino de Segurança</h5>
                 <p class="text-[10px] opacity-80 uppercase tracking-widest mb-4 leading-relaxed text-white">
-                    Apanhe 🥩 e 🍼<br>Fuja dos 🦠 e 💋 (Beijos)!<br>Meta: 100 pontos para vencer!
+                    Apanhe 🥩 e 🍼<br>Fuja dos 🦠 e 💋 (Beijos)!<br>Alvo: 100 pontos.
                 </p>
                 <button onclick="window.startGame()" class="bg-stone-100 text-stone-900 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Iniciar Quest</button>
             `;
@@ -324,15 +361,12 @@
             cancelAnimationFrame(animationId);
             const overlay = document.getElementById('game-overlay');
             const content = document.getElementById('overlay-content');
-            
             overlay.classList.remove('hidden');
             content.innerHTML = `
                 <div class="animate-bounce mb-2"><i data-lucide="trophy" class="w-14 h-14 text-amber-400 mx-auto fill-amber-400"></i></div>
-                <h5 class="font-black text-xl text-green-400 uppercase mb-2 tracking-tighter">Missão Cumprida!</h5>
-                <p class="text-[10px] opacity-95 uppercase mb-6 leading-relaxed text-white">
-                    <strong>Parabéns!</strong> Você venceu o jogo e<br>entendeu as regras de segurança do Arthur!
-                </p>
-                <button onclick="window.startGame()" class="bg-green-500 text-white px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all">Jogar Novamente</button>
+                <h5 class="font-black text-xl text-green-400 uppercase mb-2">Missão Cumprida!</h5>
+                <p class="text-[10px] opacity-95 text-white uppercase mb-6 leading-relaxed">Você entendeu as regras de segurança!<br>O Arthur está a salvo.</p>
+                <button onclick="window.startGame()" class="bg-green-500 text-white px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl">Jogar Novamente</button>
             `;
             lucide.createIcons();
         }
@@ -342,31 +376,25 @@
             cancelAnimationFrame(animationId);
             const overlay = document.getElementById('game-overlay');
             const content = document.getElementById('overlay-content');
-            
             overlay.classList.remove('hidden');
             content.innerHTML = `
                 <div class="animate-pulse mb-2"><i data-lucide="skull" class="w-12 h-12 text-red-500 mx-auto"></i></div>
-                <h5 class="font-black text-xl text-red-500 uppercase mb-2">Falha no Protocolo!</h5>
-                <p class="text-[10px] opacity-80 uppercase mb-4 text-white">A energia do Arthur chegou a 0.<br>Tente novamente ser um bom guardião!</p>
-                <button onclick="window.startGame()" class="bg-red-600 text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg">Reiniciar Sistema</button>
+                <h5 class="font-black text-xl text-red-500 uppercase mb-2">Protocolo Falhou!</h5>
+                <p class="text-[10px] opacity-80 text-white mb-4">A energia do Arthur chegou a 0.<br>Tente novamente!</p>
+                <button onclick="window.startGame()" class="bg-red-600 text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase">Reiniciar</button>
             `;
             lucide.createIcons();
         }
 
         function spawnItem() {
             const types = [
-                { char: '🥩', type: 'good', value: 10 },
-                { char: '🍼', type: 'good', value: 15 },
-                { char: '🦠', type: 'bad', value: -10 },
-                { char: '💋', type: 'bad', value: -15 }
+                { char: '🥩', value: 10 }, { char: '🍼', value: 15 },
+                { char: '🦠', value: -10 }, { char: '💋', value: -15 }
             ];
             const item = types[Math.floor(Math.random() * types.length)];
             items.push({
-                x: Math.random() * (canvas.width - 30),
-                y: -30,
-                char: item.char,
-                type: item.type,
-                value: item.value,
+                x: Math.random() * (canvas.width - 30), y: -30,
+                char: item.char, value: item.value,
                 speed: 2 + Math.random() * 3
             });
         }
@@ -374,12 +402,9 @@
         function gameLoop() {
             if (!gameRunning) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Desenhar Player (Emoji 👶)
             ctx.font = '40px Arial';
             ctx.fillText('👶', player.x, player.y + 35);
 
-            // Spawn itens
             if (Math.random() < 0.035) spawnItem();
 
             for (let i = items.length - 1; i >= 0; i--) {
@@ -388,34 +413,16 @@
                 ctx.font = '30px Arial';
                 ctx.fillText(it.char, it.x, it.y);
 
-                // Colisão
                 if (it.y > player.y - 10 && it.y < player.y + 40 && it.x > player.x - 20 && it.x < player.x + 40) {
                     gameScore += it.value;
                     items.splice(i, 1);
-                    
-                    // Checar Vitória
-                    if (gameScore >= 100) {
-                        gameScore = 100;
-                        document.getElementById('game-score').innerText = '100';
-                        gameWin();
-                        return;
-                    }
-
-                    // Checar Derrota
-                    if (gameScore <= 0) {
-                        gameScore = 0;
-                        document.getElementById('game-score').innerText = '0';
-                        gameOver();
-                        return;
-                    }
-                    
+                    if (gameScore >= 100) { gameScore = 100; document.getElementById('game-score').innerText = '100'; gameWin(); return; }
+                    if (gameScore <= 0) { gameScore = 0; document.getElementById('game-score').innerText = '0'; gameOver(); return; }
                     document.getElementById('game-score').innerText = gameScore;
                     continue;
                 }
-
                 if (it.y > canvas.height) items.splice(i, 1);
             }
-
             animationId = requestAnimationFrame(gameLoop);
         }
 
@@ -428,11 +435,7 @@
         }
 
         canvas.addEventListener('mousemove', movePlayer);
-        canvas.addEventListener('touchmove', (e) => {
-            if(gameRunning) e.preventDefault();
-            movePlayer(e);
-        }, { passive: false });
-
+        canvas.addEventListener('touchmove', (e) => { if(gameRunning) e.preventDefault(); movePlayer(e); }, { passive: false });
         window.addEventListener('resize', resizeGame);
 
         document.addEventListener('DOMContentLoaded', () => {
