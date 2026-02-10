@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Churras do Tutu - Edição Boho Geek com Som Corrigido</title>
+    <title>Churras do Tutu - Anime Edition 🔥</title>
     
     <!-- Scripts de UI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Handlee&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Handlee&family=Fira+Code:wght@700&display=swap');
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -18,48 +18,47 @@
             background-color: #fdfbf7;
         }
         .baby-font { font-family: 'Handlee', cursive; }
+        .geek-font { font-family: 'Fira Code', monospace; }
         
+        /* Paleta Arthur: Marrom Profundo (#5d4037) e Bege (#d7ccc8) com Laranja Fogo (#f97316) */
         .earth-bg {
-            background-color: #8d6e63;
-            background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
-                              radial-gradient(circle at 80% 70%, rgba(215, 204, 200, 0.2) 0%, transparent 30%);
+            background-color: #5d4037;
+            background-image: linear-gradient(135deg, #5d4037 0%, #8d6e63 100%);
         }
 
+        /* ANIMAÇÕES ANIME STYLE */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .animate-fade-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
+        .animate-hero-entry { animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; }
+        
+        @keyframes fireGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(249, 115, 22, 0.8), 0 0 30px rgba(251, 146, 60, 0.4); }
+        }
+        .fire-text { animation: fireGlow 2s infinite; color: #f97316; }
 
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .shimmer-effect {
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
             background-size: 200% 100%;
-            animation: shimmer 3s infinite;
+            animation: shimmer 2s infinite linear;
         }
-
-        .animate-heart { animation: heartbeat 1.5s infinite ease-in-out; }
-        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-
-        .floating { animation: floating 4s infinite ease-in-out; }
-        @keyframes floating { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
         .progress-pixel {
-            background-image: linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.1) 75%, transparent 75%, transparent);
+            background-image: linear-gradient(45deg, rgba(255,255,255,.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.2) 50%, rgba(255,255,255,.2) 75%, transparent 75%, transparent);
             background-size: 1rem 1rem;
         }
 
         #game-container {
             width: 100%;
-            height: 300px;
-            background: #fdfbf7;
+            height: 320px;
+            background: #27272a;
             position: relative;
             overflow: hidden;
             border-radius: 1.5rem;
-            border: 2px solid #d7ccc8;
+            border: 3px solid #f97316;
             touch-action: none;
         }
         .hidden { display: none; }
@@ -69,53 +68,49 @@
 
     <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative flex flex-col pb-10">
         
-        <!-- Header -->
-        <section class="earth-bg text-stone-50 p-8 pt-12 pb-16 rounded-b-[3.5rem] relative overflow-hidden text-center">
-            <div class="absolute top-4 right-4 opacity-10 floating">
-                <i data-lucide="gamepad-2" style="width: 80px; height: 80px;"></i>
+        <!-- Header: Arthur Saiyan Mode -->
+        <section class="earth-bg text-stone-50 p-8 pt-12 pb-20 rounded-b-[4rem] relative overflow-hidden text-center border-b-8 border-orange-500/30">
+            <div class="absolute top-4 right-4 opacity-20 floating">
+                <i data-lucide="zap" class="w-16 h-16 text-yellow-400 fill-yellow-400"></i>
             </div>
             
-            <!-- Botão de Som Global -->
-            <button onclick="window.toggleMasterAudio(this)" class="absolute top-4 left-4 bg-white/20 p-2 rounded-full backdrop-blur-md border border-white/20 z-50 transition-all active:scale-90">
-                <i id="audio-icon" data-lucide="volume-x" class="w-4 h-4"></i>
+            <!-- Botão de Música Anime -->
+            <button onclick="window.toggleAnimeMusic(this)" class="absolute top-4 left-4 bg-orange-500 p-3 rounded-full shadow-lg border-2 border-white/30 z-50 transition-all active:scale-75">
+                <i id="audio-icon" data-lucide="volume-x" class="w-5 h-5 text-white"></i>
             </button>
 
-            <div class="relative z-10 flex flex-col items-center animate-fade-up">
-                <div class="inline-flex items-center gap-2 bg-stone-900/20 backdrop-blur-md text-stone-100 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-stone-100/20 overflow-hidden relative">
+            <div class="relative z-10 flex flex-col items-center animate-hero-entry">
+                <div class="inline-flex items-center gap-2 bg-orange-600 text-white px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 border-2 border-orange-400 overflow-hidden relative shadow-lg">
                     <div class="absolute inset-0 shimmer-effect"></div>
-                    <i data-lucide="sparkles" class="w-3 h-3 text-amber-200"></i> Missão: Churras do Tutu
+                    <i data-lucide="flame" class="w-3 h-3 text-yellow-300"></i> Level Up: Arthur
                 </div>
                 
-                <h1 class="text-4xl font-black mb-2 baby-font tracking-tight text-white drop-shadow-md">
-                    Churras do <span class="text-stone-200">Tutu</span>
+                <h1 class="text-5xl font-black mb-1 baby-font tracking-tight text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">
+                    Churras do <span class="text-orange-400">Tutu</span>
                 </h1>
-                
-                <!-- Botão TTS corrigido -->
-                <button id="btn-tts" onclick="window.playGreeting()" class="mt-2 flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/10 text-[9px] font-bold uppercase tracking-widest transition-all active:scale-95 shadow-sm">
-                    <i data-lucide="mic" class="w-3 h-3 text-amber-200"></i> Ouvir Mensagem
-                </button>
+                <p class="geek-font text-orange-200 text-[10px] uppercase font-bold tracking-widest mt-2">Quest: Incendeie o seu coração!</p>
                 
                 <!-- ARTHUR UPTIME -->
-                <div class="mt-8 bg-stone-900/20 backdrop-blur-sm p-5 rounded-3xl border border-white/10 soft-shadow w-full">
-                    <p class="text-[10px] uppercase font-black text-stone-200 mb-3 tracking-widest flex justify-center items-center gap-2">
-                        <i data-lucide="heart" class="w-3 h-3 fill-stone-100 text-stone-100 animate-heart"></i> Arthur Uptime
+                <div class="mt-8 bg-black/30 backdrop-blur-md p-5 rounded-3xl border border-white/10 soft-shadow w-full ring-1 ring-white/20">
+                    <p class="text-[10px] uppercase font-black text-orange-400 mb-3 tracking-widest flex justify-center items-center gap-2">
+                        <i data-lucide="activity" class="w-3 h-3 text-green-400"></i> Arthur Uptime Status
                     </p>
                     <div class="grid grid-cols-4 gap-2">
-                        <div class="bg-white/10 p-2 rounded-2xl">
-                            <span id="life-days" class="text-xl font-black block leading-none text-white">00</span>
-                            <span class="text-[8px] uppercase font-bold opacity-70">Dias</span>
+                        <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+                            <span id="life-days" class="text-2xl font-black block leading-none text-white geek-font">00</span>
+                            <span class="text-[7px] uppercase font-bold opacity-60 block mt-1">Dias</span>
                         </div>
-                        <div class="bg-white/10 p-2 rounded-2xl">
-                            <span id="life-hours" class="text-xl font-black block leading-none text-white">00</span>
-                            <span class="text-[8px] uppercase font-bold opacity-70">Hrs</span>
+                        <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+                            <span id="life-hours" class="text-2xl font-black block leading-none text-white geek-font">00</span>
+                            <span class="text-[7px] uppercase font-bold opacity-60 block mt-1">Hrs</span>
                         </div>
-                        <div class="bg-white/10 p-2 rounded-2xl">
-                            <span id="life-mins" class="text-xl font-black block leading-none text-white">00</span>
-                            <span class="text-[8px] uppercase font-bold opacity-70">Min</span>
+                        <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+                            <span id="life-mins" class="text-2xl font-black block leading-none text-white geek-font">00</span>
+                            <span class="text-[7px] uppercase font-bold opacity-60 block mt-1">Min</span>
                         </div>
-                        <div class="bg-white/10 p-2 rounded-2xl text-amber-200 font-bold border border-amber-200/20">
-                            <span id="life-secs" class="text-xl block leading-none">00</span>
-                            <span class="text-[8px] uppercase opacity-70">Seg</span>
+                        <div class="bg-orange-500/20 p-2 rounded-xl border border-orange-500/30 text-orange-400">
+                            <span id="life-secs" class="text-2xl font-black block leading-none geek-font">00</span>
+                            <span class="text-[7px] uppercase font-bold opacity-70 block mt-1">Seg</span>
                         </div>
                     </div>
                 </div>
@@ -123,123 +118,144 @@
         </section>
 
         <!-- EVENT COUNTDOWN -->
-        <section class="px-6 -mt-8 relative z-20 animate-fade-up delay-1">
-            <div class="bg-white rounded-3xl p-6 shadow-xl border border-stone-100 flex flex-col items-center">
-                <span class="text-[10px] uppercase font-black text-stone-400 mb-4 tracking-[0.2em] text-center italic">Contagem para o Churrasco</span>
+        <section class="px-6 -mt-10 relative z-20 animate-hero-entry" style="animation-delay: 0.2s;">
+            <div class="bg-white rounded-3xl p-6 shadow-2xl border-2 border-stone-100 flex flex-col items-center">
+                <span class="text-[10px] uppercase font-black text-stone-400 mb-4 tracking-[0.3em] text-center">Countdown para o Deploy da Carne</span>
                 <div id="event-timer-container" class="flex justify-around items-center w-full max-w-[280px]">
                     <div class="text-center">
-                        <span id="event-days" class="text-3xl font-black text-stone-800 baby-font text-center">00</span>
-                        <p class="text-[9px] font-bold text-stone-400 uppercase text-center">Dias</p>
+                        <span id="event-days" class="text-4xl font-black text-stone-800 geek-font">00</span>
+                        <p class="text-[8px] font-bold text-stone-400 uppercase">Dias</p>
                     </div>
-                    <div class="text-stone-200 font-bold text-xl">:</div>
+                    <div class="text-orange-500 font-black text-2xl animate-pulse">:</div>
                     <div class="text-center">
-                        <span id="event-hours" class="text-3xl font-black text-stone-800 baby-font text-center">00</span>
-                        <p class="text-[9px] font-bold text-stone-400 uppercase text-center">Horas</p>
+                        <span id="event-hours" class="text-4xl font-black text-stone-800 geek-font">00</span>
+                        <p class="text-[8px] font-bold text-stone-400 uppercase">Hrs</p>
                     </div>
-                    <div class="text-stone-200 font-bold text-xl">:</div>
+                    <div class="text-orange-500 font-black text-2xl animate-pulse">:</div>
                     <div class="text-center">
-                        <span id="event-mins" class="text-3xl font-black text-stone-800 baby-font text-center">00</span>
-                        <p class="text-[9px] font-bold text-stone-400 uppercase text-center">Mins</p>
+                        <span id="event-mins" class="text-4xl font-black text-stone-800 geek-font">00</span>
+                        <p class="text-[8px] font-bold text-stone-400 uppercase">Min</p>
                     </div>
-                    <div class="text-stone-200 font-bold text-xl">:</div>
+                    <div class="text-orange-500 font-black text-2xl animate-pulse">:</div>
                     <div class="text-center">
-                        <span id="event-secs" class="text-3xl font-black text-orange-500 baby-font text-center">00</span>
-                        <p class="text-[9px] font-bold text-stone-400 uppercase text-center">Segs</p>
+                        <span id="event-secs" class="text-4xl font-black text-orange-600 geek-font">00</span>
+                        <p class="text-[8px] font-bold text-stone-400 uppercase">Seg</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- MINI JOGO -->
-        <section class="p-6 animate-fade-up delay-2">
-            <div class="bg-stone-50 border border-stone-200 rounded-[2rem] p-4 soft-shadow text-center">
-                <div class="flex items-center justify-between mb-3 px-2">
-                    <div class="flex flex-col text-left">
-                        <span class="text-[10px] font-black text-stone-400 uppercase tracking-widest leading-none">Minigame</span>
-                        <h4 class="font-bold text-stone-800 text-sm">Proteger o Arthur</h4>
+        <!-- MINI JOGO: DEFESA SAIYAJIN -->
+        <section class="p-6 animate-hero-entry" style="animation-delay: 0.4s;">
+            <div class="bg-stone-900 border-4 border-orange-500 rounded-[2.5rem] p-4 shadow-xl">
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-black text-orange-400 uppercase tracking-widest leading-none">Training Room</span>
+                        <h4 class="font-bold text-white text-sm uppercase">Missão: Defesa Arthur</h4>
                     </div>
-                    <div id="game-score-box" class="bg-stone-800 text-white px-3 py-1 rounded-full text-xs font-black ring-4 ring-stone-100">
-                        ENERGIA: <span id="game-score">20</span>
+                    <div id="game-score-box" class="bg-orange-600 text-white px-4 py-1.5 rounded-full text-xs font-black ring-4 ring-orange-900/50">
+                        KI: <span id="game-score">20</span>
                     </div>
                 </div>
                 
                 <div id="game-container">
                     <canvas id="game-canvas"></canvas>
-                    <div id="game-overlay" class="absolute inset-0 bg-stone-900/80 flex flex-col items-center justify-center text-white p-6 text-center z-30">
+                    <div id="game-overlay" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white p-6 text-center z-30">
                         <div id="overlay-content">
-                            <i data-lucide="play" class="w-12 h-12 mb-4 text-amber-200 fill-amber-200 mx-auto cursor-pointer" onclick="window.startGame()"></i>
-                            <h5 class="font-black text-lg uppercase mb-2">Treino de Segurança</h5>
-                            <p class="text-[10px] opacity-80 uppercase tracking-widest mb-4 leading-relaxed">Apanhe 🥩 e 🍼<br>Fuja dos 🦠 e 💋!<br>Meta: 100 pontos.</p>
-                            <button onclick="window.startGame()" class="bg-stone-100 text-stone-900 px-6 py-2 rounded-xl text-[10px] font-black uppercase">Iniciar Quest</button>
+                            <i data-lucide="play-circle" class="w-16 h-16 mb-4 text-orange-500 fill-orange-500/20 mx-auto cursor-pointer" onclick="window.startGame()"></i>
+                            <h5 class="font-black text-xl uppercase mb-2 text-orange-400">Iniciar Treino</h5>
+                            <p class="text-[10px] opacity-70 uppercase tracking-widest mb-6 leading-relaxed">
+                                Apanhe 🥩 e 🍼 para ganhar energia.<br>Fuja dos 💋 e 🦠!<br><span class="text-white font-bold">Ganhe com 100 KI!</span>
+                            </p>
+                            <button onclick="window.startGame()" class="bg-orange-600 text-white px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-lg active:scale-95 transition-all">Começar Missão</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Ações e Links -->
-        <section class="px-8 pb-4 space-y-3 animate-fade-up delay-3">
+        <!-- Ações Heroicas -->
+        <section class="px-8 pb-4 space-y-4 animate-hero-entry" style="animation-delay: 0.6s;">
             <div class="grid grid-cols-2 gap-4">
-                <div class="bg-stone-50 p-4 rounded-3xl border border-stone-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-stone-600 shadow-sm"><i data-lucide="calendar"></i></div>
-                    <div class="text-left">
-                        <p class="text-[8px] font-bold text-stone-400 uppercase tracking-tight">Data</p>
-                        <p class="text-sm font-black text-stone-800 leading-none">14 Março</p>
-                    </div>
+                <div class="bg-stone-100 p-5 rounded-3xl border-2 border-stone-200 flex flex-col items-center gap-2">
+                    <i data-lucide="calendar" class="w-6 h-6 text-orange-600"></i>
+                    <p class="text-[9px] font-bold text-stone-400 uppercase">Data</p>
+                    <p class="text-sm font-black text-stone-800">14 Março</p>
                 </div>
-                <div class="bg-stone-50 p-4 rounded-3xl border border-stone-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-stone-600 shadow-sm"><i data-lucide="clock"></i></div>
-                    <div class="text-left">
-                        <p class="text-[8px] font-bold text-stone-400 uppercase tracking-tight text-center">Início</p>
-                        <p class="text-sm font-black text-stone-800 leading-none text-center">12:30h</p>
-                    </div>
+                <div class="bg-stone-100 p-5 rounded-3xl border-2 border-stone-200 flex flex-col items-center gap-2">
+                    <i data-lucide="swords" class="w-6 h-6 text-orange-600"></i>
+                    <p class="text-[9px] font-bold text-stone-400 uppercase">Início</p>
+                    <p class="text-sm font-black text-stone-800">12:30h</p>
                 </div>
             </div>
 
-            <button onclick="window.addToGoogleCalendar()" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-4 rounded-2xl border border-stone-200 flex items-center justify-center gap-2 transition-all active:scale-95 text-[10px] uppercase tracking-widest">
-                <i data-lucide="calendar-plus" class="w-4 h-4"></i> Adicionar à Agenda
+            <button onclick="window.addToGoogleCalendar()" class="w-full bg-stone-800 hover:bg-black text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 text-[11px] uppercase tracking-widest border-b-4 border-stone-900 shadow-xl">
+                <i data-lucide="calendar-plus" class="w-5 h-5 text-orange-500"></i> Adicionar à Agenda
             </button>
 
-            <a href="https://felipegaps.github.io/contador-arthur/" target="_blank" class="w-full bg-stone-800 hover:bg-stone-900 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 text-[10px] uppercase tracking-widest shadow-lg">
-                <i data-lucide="baby" class="w-4 h-4 text-amber-200"></i> Contador do Tutu
+            <a href="https://felipegaps.github.io/contador-arthur/" target="_blank" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 text-[11px] uppercase tracking-widest border-b-4 border-orange-800 shadow-xl">
+                <i data-lucide="baby" class="w-5 h-5 text-white"></i> Contador do Tutu
             </a>
         </section>
 
-        <!-- RSVP -->
-        <section class="p-6 animate-fade-up text-center">
-            <div class="bg-stone-100 rounded-[3rem] p-8 border border-stone-200">
-                <h3 class="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-6 italic">Confirmar Presença</h3>
-                <div id="rsvp-form-box" class="space-y-4">
-                    <input type="text" id="guest-name" placeholder="Seu Nome Completo" class="w-full p-4 bg-white border border-stone-200 rounded-2xl focus:border-stone-800 outline-none text-sm font-bold text-stone-800 text-center">
-                    <button onclick="window.sendRSVP()" class="w-full bg-stone-800 text-white font-black py-5 rounded-3xl shadow-xl transition-all active:scale-95 uppercase tracking-widest text-xs">
-                        Confirmar via WhatsApp
-                    </button>
+        <!-- Protocolo Fire Hashira -->
+        <section class="p-6">
+            <div class="bg-white border-4 border-stone-800 rounded-[2.5rem] p-7 relative">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-stone-800 px-6 py-1 rounded-full text-[10px] font-black text-white uppercase tracking-[0.3em]">
+                    Protocolo de Defesa
                 </div>
-                <div id="rsvp-success" class="hidden py-4 text-center">
-                    <div class="w-14 h-14 bg-stone-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="check" class="text-white w-8 h-8"></i>
+                
+                <div class="space-y-6 mt-4">
+                    <div class="flex gap-4 items-center">
+                        <div class="w-12 h-12 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600 shrink-0 border-2 border-orange-200"><i data-lucide="shield-x" class="w-6 h-6"></i></div>
+                        <p class="text-xs text-stone-600 leading-tight"><strong>Barreira Sanitária:</strong> Proibido beijar o Arthur. Mantenha os seus germes longe do futuro Arquiteto.</p>
                     </div>
-                    <h4 class="text-stone-900 font-black text-lg uppercase leading-tight text-center">Missão Aceite!</h4>
+                    <div class="flex gap-4 items-center">
+                        <div class="w-12 h-12 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-800 shrink-0 border-2 border-stone-200"><i data-lucide="hand-metal" class="w-6 h-6"></i></div>
+                        <p class="text-xs text-stone-600 leading-tight"><strong>Higiene Máxima:</strong> Lave bem mãos e antebraços ao entrar na Base 101.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Waze -->
-        <section class="p-6 space-y-4 animate-fade-up text-center">
-            <div class="bg-stone-50 rounded-[2.5rem] p-7 border border-stone-100 text-left">
-                <div class="flex items-center gap-5">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-stone-700 shadow-sm shrink-0"><i data-lucide="map-pin"></i></div>
-                    <div class="text-left">
-                        <p class="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">Coordenadas</p>
-                        <p class="font-black text-stone-800 text-sm leading-tight italic text-stone-600">Rua Anacleto, 101</p>
-                        <p class="text-stone-600 font-bold text-[10px] uppercase mt-1 leading-none">Vila Isolina Mazzei - Apto 13</p>
+        <!-- RSVP -->
+        <section class="p-6">
+            <div class="bg-stone-900 rounded-[3.5rem] p-10 text-center relative overflow-hidden border-t-8 border-orange-600 shadow-2xl">
+                <div class="absolute -top-20 -right-20 w-48 h-48 bg-orange-600/20 rounded-full blur-3xl"></div>
+                <h3 class="text-[12px] font-black text-orange-500 uppercase tracking-[0.4em] mb-8 fire-text">Confirmar Missão</h3>
+                <div id="rsvp-form-box" class="space-y-5">
+                    <input type="text" id="guest-name" placeholder="NOME DO GUERREIRO" class="w-full p-5 bg-white/5 border-2 border-white/10 rounded-2xl focus:border-orange-500 outline-none text-sm font-black text-white placeholder:text-white/20 text-center geek-font tracking-widest uppercase">
+                    <button onclick="window.sendRSVP()" class="w-full bg-white text-stone-900 font-black py-6 rounded-2xl shadow-xl transition-all active:scale-95 uppercase tracking-[0.3em] text-xs">
+                        Confirmar via WhatsApp
+                    </button>
+                </div>
+                <div id="rsvp-success" class="hidden py-6">
+                    <div class="w-20 h-20 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-orange-600/50 shadow-2xl">
+                        <i data-lucide="check" class="text-white w-12 h-12"></i>
+                    </div>
+                    <h4 class="text-white font-black text-xl uppercase tracking-tighter">Missão Aceite!</h4>
+                    <p class="text-orange-500 text-[10px] font-black uppercase mt-3 tracking-widest">A abrir portal de comunicação...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Morada -->
+        <section class="p-6 space-y-4">
+            <div class="bg-stone-50 rounded-[3rem] p-8 border-2 border-stone-200 text-left relative overflow-hidden">
+                <div class="absolute -bottom-4 -right-4 opacity-5"><i data-lucide="map" style="width: 120px; height: 120px;"></i></div>
+                <div class="flex items-center gap-6 mb-8">
+                    <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-orange-600 shadow-xl border-2 border-stone-100 shrink-0"><i data-lucide="map-pin" class="w-8 h-8"></i></div>
+                    <div>
+                        <p class="text-[10px] font-black text-stone-400 uppercase tracking-widest">Local do Deploy</p>
+                        <p class="font-black text-stone-800 text-lg leading-tight">Rua Anacleto, 101</p>
+                        <p class="text-orange-600 font-bold text-xs uppercase leading-none mt-1">Torre Avis - Apto 13</p>
                     </div>
                 </div>
-                <a href="https://waze.com/ul?q=Rua%20Anacleto%20101%20Vila%20Isolina%20Mazzei" target="_blank" class="w-full bg-white text-stone-800 font-black text-[10px] uppercase py-4 rounded-2xl flex items-center justify-center gap-2 mt-6 active:scale-95 shadow-sm border border-stone-200 tracking-widest">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Waze_icon.svg" class="w-4 h-4" alt="Waze"> Ir via Waze
+                <a href="https://waze.com/ul?q=Rua%20Anacleto%20101%20Vila%20Isolina%20Mazzei" target="_blank" class="w-full bg-white text-stone-800 font-black text-xs uppercase py-5 rounded-2xl flex items-center justify-center gap-3 active:scale-95 shadow-lg border-2 border-stone-100 tracking-[0.2em]">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Waze_icon.svg" class="w-5 h-5" alt="Waze"> Iniciar Navegação
                 </a>
             </div>
-            <p class="text-stone-300 text-[9px] font-black uppercase tracking-[0.4em] mt-8 baby-font text-center">Incendeie o seu coração na Casa 101</p>
+            <p class="text-stone-300 text-[9px] font-black uppercase tracking-[0.5em] mt-12 text-center">Incendeie o seu coração na Casa 101</p>
         </section>
     </div>
 
@@ -247,316 +263,222 @@
     <script>
         const ARTHUR_BIRTH = new Date("2025-12-24T21:05:00").getTime();
         const EVENT_DATE = new Date("2026-03-14T12:30:00").getTime();
-        const apiKey = ""; 
 
-        // --- SISTEMA DE ÁUDIO CORRIGIDO ---
-        let audioContext;
-        let isAudioEnabled = false;
+        // --- SISTEMA DE MÚSICA ANIME GEEK ---
+        let audioCtx;
+        let musicOn = false;
+        let musicLoop;
+        let nTime = 0;
 
-        function initAudio() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
+        function startAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        // Sintetizador para sons mais "brilhantes" e agressivos de anime
+        function playHeroNote(freq, time, dur, type = 'square') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, time);
+            gain.gain.setValueAtTime(0.06, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(time);
+            osc.stop(time + dur);
+        }
+
+        // Melodia de Abertura (Energética)
+        const animeMelody = [
+            261.63, 329.63, 392.00, 523.25, 493.88, 392.00, 440.00, 392.00,
+            261.63, 329.63, 392.00, 523.25, 587.33, 523.25, 493.88, 392.00
+        ];
+        let cNote = 0;
+
+        function animeScheduler() {
+            while (nTime < audioCtx.currentTime + 0.1) {
+                // Alterna timbres para soar mais como uma banda 8-bit
+                const type = cNote % 4 === 0 ? 'sawtooth' : 'square';
+                playHeroNote(animeMelody[cNote], nTime, 0.25, type);
+                nTime += 0.3; // Ritmo mais rápido (BPM alto)
+                cNote = (cNote + 1) % animeMelody.length;
             }
         }
 
-        window.toggleMasterAudio = function(btn) {
-            initAudio(); // Ativa no clique
-            isAudioEnabled = !isAudioEnabled;
+        window.toggleAnimeMusic = function(btn) {
+            startAudio();
             const icon = document.getElementById('audio-icon');
-            if (isAudioEnabled) {
+            if (!musicOn) {
+                musicOn = true;
                 icon.setAttribute('data-lucide', 'volume-2');
-                playSound(440, 0.1, 'sine');
+                nTime = audioCtx.currentTime;
+                musicLoop = setInterval(animeScheduler, 50);
             } else {
+                musicOn = false;
                 icon.setAttribute('data-lucide', 'volume-x');
+                clearInterval(musicLoop);
             }
             lucide.createIcons();
         };
 
-        function playSound(freq, duration, type = 'square') {
-            if (!isAudioEnabled) return;
-            initAudio();
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-            gain.gain.setValueAtTime(0.05, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.start();
-            osc.stop(audioContext.currentTime + duration);
+        function fx(f, d, t='triangle') {
+            if(!musicOn && !audioCtx) return;
+            startAudio();
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime);
+            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + d);
+            o.connect(g); g.connect(audioCtx.destination);
+            o.start(); o.stop(audioCtx.currentTime + d);
         }
 
-        // --- GEMINI TTS COM CONVERSÃO WAV PARA MOBILE ---
-        async function playGreeting() {
-            initAudio(); // Crucial para mobile
-
-            if (!isAudioEnabled) {
-                alert("Por favor, ative o som no ícone de volume no topo da página antes de ouvir a mensagem.");
-                return;
-            }
-
-            const btn = document.getElementById('btn-tts');
-            const originalContent = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="animate-spin" data-lucide="loader-2"></i>';
-            lucide.createIcons();
-
-            try {
-                const prompt = "Diga com voz calorosa de anfitrião geek: Olá! Bem-vindo ao Churras do Tutu. Incendeie o seu coração e não se esqueça de higienizar as mãos para proteger o pequeno Arthur!";
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: {
-                            responseModalities: ["AUDIO"],
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } }
-                        },
-                        model: "gemini-2.5-flash-preview-tts"
-                    })
-                });
-
-                const data = await response.json();
-                const pcmBase64 = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-                
-                if (pcmBase64) {
-                    const audioBuffer = base64ToArrayBuffer(pcmBase64);
-                    // Converter PCM para WAV para maior compatibilidade mobile
-                    const wavBlob = pcmToWav(audioBuffer, 24000);
-                    const audioUrl = URL.createObjectURL(wavBlob);
-                    const audio = new Audio(audioUrl);
-                    audio.play();
-                }
-            } catch (e) {
-                console.error("TTS Error:", e);
-                alert("O sistema de áudio encontrou um problema. Tente novamente.");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalContent;
-                lucide.createIcons();
-            }
-        }
-
-        function base64ToArrayBuffer(base64) {
-            const binaryString = window.atob(base64);
-            const bytes = new Uint8Array(binaryString.length);
-            for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
-            return bytes.buffer;
-        }
-
-        // Função de utilidade para criar cabeçalho WAV (Obrigatória para mobile)
-        function pcmToWav(pcmBuffer, sampleRate) {
-            const numOfChannels = 1;
-            const bytesPerSample = 2;
-            const wavBuffer = new ArrayBuffer(44 + pcmBuffer.byteLength);
-            const view = new DataView(wavBuffer);
-
-            // RIFF chunk descriptor
-            writeString(view, 0, 'RIFF');
-            view.setUint32(4, 36 + pcmBuffer.byteLength, true);
-            writeString(view, 8, 'WAVE');
-            // fmt sub-chunk
-            writeString(view, 12, 'fmt ');
-            view.setUint32(16, 16, true);
-            view.setUint16(20, 1, true); // PCM format
-            view.setUint16(22, numOfChannels, true);
-            view.setUint32(24, sampleRate, true);
-            view.setUint32(28, sampleRate * numOfChannels * bytesPerSample, true);
-            view.setUint16(32, numOfChannels * bytesPerSample, true);
-            view.setUint16(34, bytesPerSample * 8, true);
-            // data sub-chunk
-            writeString(view, 36, 'data');
-            view.setUint32(40, pcmBuffer.byteLength, true);
-
-            // Copy PCM data
-            const pcmData = new Uint8Array(pcmBuffer);
-            const wavData = new Uint8Array(wavBuffer);
-            wavData.set(pcmData, 44);
-
-            return new Blob([wavBuffer], { type: 'audio/wav' });
-        }
-
-        function writeString(view, offset, string) {
-            for (let i = 0; i < string.length; i++) {
-                view.setUint8(offset + i, string.charCodeAt(i));
-            }
-        }
-
-        // --- CRONOMETROS ---
+        // --- CONTADORES ---
         function tick() {
             const now = new Date().getTime();
-            const lifeDiff = now - ARTHUR_BIRTH;
-            const lD = Math.floor(lifeDiff / (1000 * 60 * 60 * 24));
-            const lH = Math.floor((lifeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const lM = Math.floor((lifeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const lS = Math.floor((lifeDiff % (1000 * 60)) / 1000);
+            const lD = now - ARTHUR_BIRTH;
+            document.getElementById('life-days').innerText = Math.floor(lD / (1000 * 60 * 60 * 24));
+            document.getElementById('life-hours').innerText = String(Math.floor((lD % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            document.getElementById('life-mins').innerText = String(Math.floor((lD % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            document.getElementById('life-secs').innerText = String(Math.floor((lD % (1000 * 60)) / 1000)).padStart(2, '0');
 
-            if(document.getElementById('life-days')) document.getElementById('life-days').innerText = lD;
-            if(document.getElementById('life-hours')) document.getElementById('life-hours').innerText = String(lH).padStart(2, '0');
-            if(document.getElementById('life-mins')) document.getElementById('life-mins').innerText = String(lM).padStart(2, '0');
-            if(document.getElementById('life-secs')) document.getElementById('life-secs').innerText = String(lS).padStart(2, '0');
-
-            const eventDiff = EVENT_DATE - now;
+            const eD = EVENT_DATE - now;
             const container = document.getElementById('event-timer-container');
-            if (eventDiff > 0) {
-                const eD = Math.floor(eventDiff / (1000 * 60 * 60 * 24));
-                const eH = Math.floor((eventDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const eM = Math.floor((eventDiff % (1000 * 60 * 60)) / (1000 * 60));
-                const eS = Math.floor((eventDiff % (1000 * 60)) / 1000);
-
-                if(document.getElementById('event-days')) document.getElementById('event-days').innerText = eD;
-                if(document.getElementById('event-hours')) document.getElementById('event-hours').innerText = String(eH).padStart(2, '0');
-                if(document.getElementById('event-mins')) document.getElementById('event-mins').innerText = String(eM).padStart(2, '0');
-                if(document.getElementById('event-secs')) document.getElementById('event-secs').innerText = String(eS).padStart(2, '0');
+            if (eD > 0) {
+                document.getElementById('event-days').innerText = Math.floor(eD / (1000 * 60 * 60 * 24));
+                document.getElementById('event-hours').innerText = String(Math.floor((eD % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById('event-mins').innerText = String(Math.floor((eD % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById('event-secs').innerText = String(Math.floor((eD % (1000 * 60)) / 1000)).padStart(2, '0');
             } else if(container) {
-                container.innerHTML = "<p class='text-stone-600 font-black baby-font text-xl italic'>BORA COMER! 🔥</p>";
+                container.innerHTML = "<p class='text-orange-600 font-black geek-font text-2xl italic animate-bounce'>IT'S OVER 9000! 🔥🔥🔥</p>";
             }
         }
 
         window.addToGoogleCalendar = function() {
-            initAudio();
-            playSound(660, 0.1);
-            const text = "Churras do Tutu - Casa 101";
-            const dates = "20260314T153000Z/20260314T213000Z";
-            const details = "Protocolos Arthur: Não beijar o bebê e higiene das mãos.";
-            const loc = "Rua Anacleto, 101, Vila Isolina Mazzei, SP";
-            window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(text)}&dates=${dates}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(loc)}`, '_blank');
+            fx(880, 0.1);
+            const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Churras do Tutu - Casa 101")}&dates=20260314T153000Z/20260314T213000Z&details=${encodeURIComponent("Celebração do Arthur! Protocolos: Não beijar o bebê e mãos limpas.")}&location=${encodeURIComponent("Rua Anacleto, 101, Vila Isolina Mazzei, SP")}`;
+            window.open(url, '_blank');
         };
 
         window.sendRSVP = function() {
-            initAudio();
-            playSound(880, 0.15);
+            fx(1200, 0.15, 'sawtooth');
             const name = document.getElementById('guest-name').value.trim();
-            if (!name) return alert("Insira o seu nome!");
+            if (!name) return alert("Identifica-te, Guerreiro!");
             document.getElementById('rsvp-form-box').classList.add('hidden');
             document.getElementById('rsvp-success').classList.remove('hidden');
             const phone = "5511983929914";
-            const message = encodeURIComponent(`[QUEST CONFIRMADA]\nFala Arquiteto! Confirmei minha presença no Churras do Tutu!\n\nNome: ${name}\n\nEstarrei na Base 101 no dia 14 de Março! 🔥`);
+            const message = encodeURIComponent(`[MISSÃO CONFIRMADA]\nFala Arquiteto! Confirmei presença no Churras do Tutu!\n\nGuerreiro: ${name}\nKI Inicial: ${gameScore}\n\nIncendeie o seu coração! 🔥`);
             setTimeout(() => window.location.href = `https://wa.me/${phone}?text=${message}`, 1500);
         };
 
-        // --- SISTEMA DO JOGO ---
+        // --- JOGO DE DEFESA DO ARTHUR ---
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
         let gameScore = 20;
         let gameRunning = false;
-        let player = { x: 0, y: 0, w: 40, h: 40 };
+        let player = { x: 0, y: 0, w: 50, h: 50 };
         let items = [];
-        let animationId;
+        let animId;
 
-        function resizeGame() {
+        function resizeG() {
             const container = document.getElementById('game-container');
             canvas.width = container.offsetWidth;
             canvas.height = container.offsetHeight;
-            player.y = canvas.height - 50;
-            player.x = canvas.width / 2 - 20;
+            player.y = canvas.height - 60;
+            player.x = canvas.width / 2 - 25;
         }
 
         window.startGame = function() {
-            initAudio();
-            playSound(523, 0.2); 
+            startAudio();
+            fx(523, 0.2); 
             document.getElementById('game-overlay').classList.add('hidden');
-            document.getElementById('overlay-content').innerHTML = `
-                <i data-lucide="play" class="w-12 h-12 mb-4 text-amber-200 fill-amber-200 mx-auto cursor-pointer" onclick="window.startGame()"></i>
-                <h5 class="font-black text-lg uppercase mb-2 text-white">Treino de Segurança</h5>
-                <p class="text-[10px] opacity-80 uppercase tracking-widest mb-4 leading-relaxed text-white">Apanhe 🥩 e 🍼<br>Fuja dos 🦠 e 💋!<br>Meta: 100 pontos.</p>
-                <button onclick="window.startGame()" class="bg-stone-100 text-stone-900 px-6 py-2 rounded-xl text-[10px] font-black uppercase">Iniciar</button>
-            `;
-            lucide.createIcons();
             gameScore = 20;
             document.getElementById('game-score').innerText = '20';
             items = [];
             gameRunning = true;
-            resizeGame();
-            gameLoop();
+            resizeG();
+            gLoop();
         };
 
-        function gameWin() {
-            playSound(523, 0.1); playSound(659, 0.1); playSound(783, 0.2); 
+        function gWin() {
+            fx(523, 0.1); fx(659, 0.1); fx(783, 0.1); fx(1046, 0.3);
             gameRunning = false;
-            cancelAnimationFrame(animationId);
+            cancelAnimationFrame(animId);
             const overlay = document.getElementById('game-overlay');
-            const content = document.getElementById('overlay-content');
             overlay.classList.remove('hidden');
-            content.innerHTML = `
-                <i data-lucide="trophy" class="w-14 h-14 text-amber-400 mx-auto mb-2 fill-amber-400"></i>
-                <h5 class="font-black text-xl text-green-400 uppercase mb-2 text-center">Vitória!</h5>
-                <p class="text-[10px] text-white uppercase mb-6 leading-relaxed text-center">Você é o guardião perfeito!</p>
-                <button onclick="window.startGame()" class="bg-green-500 text-white px-8 py-3 rounded-2xl text-[10px] font-black uppercase mx-auto block">Reiniciar</button>
+            document.getElementById('overlay-content').innerHTML = `
+                <div class="animate-bounce mb-4"><i data-lucide="award" class="w-20 h-20 text-yellow-400 mx-auto fill-yellow-400"></i></div>
+                <h5 class="font-black text-2xl text-green-400 uppercase mb-2">Poder Infinito!</h5>
+                <p class="text-[10px] text-white uppercase mb-6 leading-relaxed">Você dominou o instinto superior de cuidado!<br>O Arthur está pronto para o churrasco.</p>
+                <button onclick="window.startGame()" class="bg-green-600 text-white px-8 py-3 rounded-2xl text-[10px] font-black uppercase shadow-xl">Super Replay</button>
             `;
             lucide.createIcons();
         }
 
-        function gameOver() {
-            playSound(110, 0.3, 'sawtooth');
+        function gOver() {
+            fx(110, 0.4, 'sawtooth');
             gameRunning = false;
-            cancelAnimationFrame(animationId);
+            cancelAnimationFrame(animId);
             const overlay = document.getElementById('game-overlay');
-            const content = document.getElementById('overlay-content');
             overlay.classList.remove('hidden');
-            content.innerHTML = `
-                <i data-lucide="skull" class="w-12 h-12 text-red-500 mx-auto mb-2"></i>
-                <h5 class="font-black text-xl text-red-500 uppercase mb-2 text-center">Game Over</h5>
-                <p class="text-[10px] text-white mb-4 text-center">Energia esgotada!</p>
-                <button onclick="window.startGame()" class="bg-red-600 text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase mx-auto block">Tentar De Novo</button>
+            document.getElementById('overlay-content').innerHTML = `
+                <div class="animate-pulse mb-4"><i data-lucide="flame-kindling" class="w-16 h-16 text-red-500 mx-auto"></i></div>
+                <h5 class="font-black text-xl text-red-500 uppercase mb-2">KI Esgotado!</h5>
+                <p class="text-[10px] text-white mb-6 uppercase">O protocolo de defesa falhou!<br>Tente novamente elevar o seu poder.</p>
+                <button onclick="window.startGame()" class="bg-red-600 text-white px-10 py-3 rounded-2xl text-[10px] font-black uppercase">Recarregar</button>
             `;
             lucide.createIcons();
         }
 
-        function spawnItem() {
-            const types = [{ char: '🥩', value: 10 }, { char: '🍼', value: 15 }, { char: '🦠', value: -10 }, { char: '💋', value: -15 }];
-            const item = types[Math.floor(Math.random() * types.length)];
-            items.push({ x: Math.random() * (canvas.width - 30), y: -30, char: item.char, value: item.value, speed: 2 + Math.random() * 3 });
-        }
-
-        function gameLoop() {
+        function gLoop() {
             if (!gameRunning) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.font = '40px Arial';
-            ctx.fillText('👶', player.x, player.y + 35);
+            ctx.font = '50px Arial';
+            ctx.fillText('👶', player.x, player.y + 45);
 
-            if (Math.random() < 0.035) spawnItem();
+            if (Math.random() < 0.04) {
+                const types = [{ c: '🥩', v: 10 }, { c: '🍼', v: 15 }, { c: '🦠', v: -15 }, { c: '💋', v: -20 }];
+                const item = types[Math.floor(Math.random() * types.length)];
+                items.push({ x: Math.random() * (canvas.width - 40), y: -40, c: item.c, v: item.v, s: 3 + Math.random() * 4 });
+            }
 
             for (let i = items.length - 1; i >= 0; i--) {
                 const it = items[i];
-                it.y += it.speed;
-                ctx.font = '30px Arial';
-                ctx.fillText(it.char, it.x, it.y);
+                it.y += it.s;
+                ctx.font = '35px Arial';
+                ctx.fillText(it.c, it.x, it.y);
 
-                if (it.y > player.y - 10 && it.y < player.y + 40 && it.x > player.x - 20 && it.x < player.x + 40) {
-                    gameScore += it.value;
+                if (it.y > player.y - 15 && it.y < player.y + 45 && it.x > player.x - 20 && it.x < player.x + 45) {
+                    gameScore += it.v;
                     items.splice(i, 1);
-                    if (it.value > 0) playSound(1000, 0.05); else playSound(200, 0.15, 'sawtooth');
-                    if (gameScore >= 100) { gameScore = 100; document.getElementById('game-score').innerText = '100'; gameWin(); return; }
-                    if (gameScore <= 0) { gameScore = 0; document.getElementById('game-score').innerText = '0'; gameOver(); return; }
+                    if (it.v > 0) fx(1200, 0.05); else fx(300, 0.2, 'sawtooth');
+                    if (gameScore >= 100) { gameScore = 100; gWin(); return; }
+                    if (gameScore <= 0) { gameScore = 0; gOver(); return; }
                     document.getElementById('game-score').innerText = gameScore;
                     continue;
                 }
                 if (it.y > canvas.height) items.splice(i, 1);
             }
-            animationId = requestAnimationFrame(gameLoop);
+            animId = requestAnimationFrame(gLoop);
         }
 
-        function movePlayer(e) {
+        canvas.addEventListener('mousemove', e => {
             if (!gameRunning) return;
             const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            player.x = Math.max(0, Math.min(clientX - rect.left - player.w/2, canvas.width - player.w));
-        }
-
-        canvas.addEventListener('mousemove', movePlayer);
-        canvas.addEventListener('touchmove', (e) => { if(gameRunning) e.preventDefault(); movePlayer(e); }, { passive: false });
-        window.addEventListener('resize', resizeGame);
+            player.x = Math.max(0, Math.min(e.clientX - rect.left - player.w/2, canvas.width - player.w));
+        });
+        canvas.addEventListener('touchmove', e => {
+            if(gameRunning) e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            player.x = Math.max(0, Math.min(e.touches[0].clientX - rect.left - player.w/2, canvas.width - player.w));
+        }, { passive: false });
 
         document.addEventListener('DOMContentLoaded', () => {
             setInterval(tick, 1000);
             tick();
             lucide.createIcons();
-            resizeGame();
+            resizeG();
         });
     </script>
 </body>
