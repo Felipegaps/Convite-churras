@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Churras do Tutu - Edição Boho Geek</title>
     
-    <!-- Scripts Externos -->
+    <!-- Scripts de UI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Firebase Compat SDK (Para rodar 100% em qualquer navegador sem módulos) -->
+    <!-- Firebase Compat SDK (Carregamento Assíncrono para não travar o UI) -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -22,77 +22,65 @@
             -webkit-tap-highlight-color: transparent;
             background-color: #fdfbf7;
         }
-
         .baby-font { font-family: 'Handlee', cursive; }
-
         .earth-bg {
             background-color: #8d6e63;
             background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
                               radial-gradient(circle at 80% 70%, rgba(215, 204, 200, 0.2) 0%, transparent 30%);
         }
-
         .soft-shadow {
             box-shadow: 0 10px 25px -5px rgba(141, 110, 99, 0.1), 0 8px 10px -6px rgba(141, 110, 99, 0.1);
         }
-
-        .floating {
-            animation: floating 4s ease-in-out infinite;
-        }
-
+        .floating { animation: floating 4s ease-in-out infinite; }
         @keyframes floating {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
             100% { transform: translateY(0px); }
         }
-
         .progress-pixel {
             background-image: linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.1) 75%, transparent 75%, transparent);
             background-size: 1rem 1rem;
         }
-
-        .hidden { display: none; }
     </style>
 </head>
 <body class="text-stone-800 overflow-x-hidden">
 
     <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative flex flex-col pb-10">
         
-        <!-- Header -->
-        <section class="earth-bg text-stone-50 p-8 pt-12 pb-16 rounded-b-[3.5rem] relative overflow-hidden">
+        <!-- Header: Arthur Uptime -->
+        <section class="earth-bg text-stone-50 p-8 pt-12 pb-16 rounded-b-[3.5rem] relative overflow-hidden text-center">
             <div class="absolute top-4 right-4 opacity-10 floating">
                 <i data-lucide="gamepad-2" style="width: 80px; height: 80px;"></i>
             </div>
             
-            <div class="relative z-10 text-center">
+            <div class="relative z-10">
                 <div class="inline-flex items-center gap-2 bg-stone-900/20 backdrop-blur-md text-stone-100 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-stone-100/20">
                     <i data-lucide="sparkles" class="w-3 h-3 text-amber-200"></i> Missão: Churras do Tutu
                 </div>
                 
-                <h1 class="text-4xl font-black mb-2 baby-font tracking-tight text-white">
-                    Churras do <span class="text-stone-200">Tutu</span>
-                </h1>
-                <p class="text-stone-200 text-sm font-medium opacity-90">Celebrando o 1º Level do Arthur!</p>
+                <h1 class="text-4xl font-black mb-2 baby-font tracking-tight text-white">Churras do <span class="text-stone-200">Tutu</span></h1>
+                <p class="text-stone-200 text-sm font-medium opacity-90">Contagem Regressiva para o Deploy da Picanha!</p>
                 
-                <!-- Cronómetro de Vida -->
+                <!-- CONTADOR DE VIDA (DINÂMICO) -->
                 <div class="mt-8 bg-stone-900/20 backdrop-blur-sm p-5 rounded-3xl border border-white/10 soft-shadow">
-                    <p class="text-[10px] uppercase font-black text-stone-200 mb-3 tracking-widest flex justify-center items-center gap-2 text-center">
+                    <p class="text-[10px] uppercase font-black text-stone-200 mb-3 tracking-widest flex justify-center items-center gap-2">
                         <i data-lucide="heart" class="w-3 h-3 fill-stone-100 text-stone-100"></i> Arthur Uptime
                     </p>
-                    <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="grid grid-cols-4 gap-2">
                         <div class="bg-white/10 p-2 rounded-2xl">
                             <span id="life-days" class="text-xl font-black block leading-none">00</span>
                             <span class="text-[8px] uppercase font-bold opacity-70">Dias</span>
                         </div>
                         <div class="bg-white/10 p-2 rounded-2xl">
                             <span id="life-hours" class="text-xl font-black block leading-none">00</span>
-                            <span class="text-[8px] uppercase font-bold opacity-70">Horas</span>
+                            <span class="text-[8px] uppercase font-bold opacity-70">Hrs</span>
                         </div>
                         <div class="bg-white/10 p-2 rounded-2xl">
                             <span id="life-mins" class="text-xl font-black block leading-none">00</span>
                             <span class="text-[8px] uppercase font-bold opacity-70">Min</span>
                         </div>
                         <div class="bg-white/10 p-2 rounded-2xl text-amber-200">
-                            <span id="life-secs" class="text-xl font-black block leading-none text-amber-200">00</span>
+                            <span id="life-secs" class="text-xl font-black block leading-none">00</span>
                             <span class="text-[8px] uppercase font-bold opacity-70">Seg</span>
                         </div>
                     </div>
@@ -100,11 +88,11 @@
             </div>
         </section>
 
-        <!-- Contador do Evento -->
+        <!-- CONTADOR DO EVENTO (DINÂMICO) -->
         <section class="px-6 -mt-8 relative z-20">
             <div class="bg-white rounded-3xl p-6 shadow-xl border border-stone-100 flex flex-col items-center">
-                <span class="text-[10px] uppercase font-black text-stone-400 mb-4 tracking-[0.2em] text-center">Contagem para o Deploy da Picanha</span>
-                <div id="event-countdown" class="flex justify-around items-center w-full max-w-[280px]">
+                <span class="text-[10px] uppercase font-black text-stone-400 mb-4 tracking-[0.2em] text-center italic">Tempo para o Churrasco</span>
+                <div id="event-timer-container" class="flex justify-around items-center w-full max-w-[280px]">
                     <div class="text-center">
                         <span id="event-days" class="text-3xl font-black text-stone-800 baby-font">00</span>
                         <p class="text-[9px] font-bold text-stone-400 uppercase">Dias</p>
@@ -121,68 +109,57 @@
                     </div>
                     <div class="text-stone-200 font-bold text-xl">:</div>
                     <div class="text-center">
-                        <span id="event-secs" class="text-3xl font-black text-stone-600 baby-font">00</span>
+                        <span id="event-secs" class="text-3xl font-black text-orange-500 baby-font">00</span>
                         <p class="text-[9px] font-bold text-stone-400 uppercase">Segs</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Info & Google Calendar -->
-        <section class="p-8 pb-4">
-            <div class="grid grid-cols-2 gap-4 mb-4">
+        <!-- Botões de Ação -->
+        <section class="p-8 pb-4 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
                 <div class="bg-stone-50 p-4 rounded-3xl border border-stone-100 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-stone-600 shadow-sm">
-                        <i data-lucide="calendar-heart" class="w-5 h-5"></i>
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <p class="text-[8px] font-bold text-stone-400 uppercase tracking-tighter">Calendário</p>
-                        <p class="text-sm font-black text-stone-800 text-center">14 Março</p>
+                        <p class="text-[8px] font-bold text-stone-400 uppercase">Data</p>
+                        <p class="text-sm font-black text-stone-800">14 Março</p>
                     </div>
                 </div>
                 <div class="bg-stone-50 p-4 rounded-3xl border border-stone-100 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-stone-600 shadow-sm">
-                        <i data-lucide="clock-4" class="w-5 h-5"></i>
+                        <i data-lucide="clock" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <p class="text-[8px] font-bold text-stone-400 uppercase tracking-tighter">Início</p>
-                        <p class="text-sm font-black text-stone-800 text-center">12:30h</p>
+                        <p class="text-[8px] font-bold text-stone-400 uppercase">Início</p>
+                        <p class="text-sm font-black text-stone-800">12:30h</p>
                     </div>
                 </div>
             </div>
-            
-            <button onclick="addToGoogleCalendar()" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-3 px-4 rounded-2xl border border-stone-200 flex items-center justify-center gap-2 transition-all active:scale-95 text-xs uppercase tracking-widest mb-2">
-                <i data-lucide="calendar-plus" class="w-4 h-4"></i> Adicionar à Agenda Google
+
+            <button onclick="window.addToGoogleCalendar()" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-4 rounded-2xl border border-stone-200 flex items-center justify-center gap-2 transition-all active:scale-95 text-xs uppercase tracking-widest">
+                <i data-lucide="calendar-plus" class="w-4 h-4"></i> Adicionar à Agenda
             </button>
+
+            <a href="https://felipegaps.github.io/contador-arthur/" target="_blank" class="w-full bg-stone-800 hover:bg-stone-900 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-95 text-xs uppercase tracking-widest shadow-lg">
+                <i data-lucide="baby" class="w-4 h-4 text-amber-200"></i> Contador do Tutu
+            </a>
         </section>
 
-        <!-- Protocolo de Segurança -->
+        <!-- Segurança -->
         <section class="p-6">
-            <div class="bg-white border-2 border-dashed border-stone-200 rounded-[2.5rem] p-7 relative">
-                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border border-stone-200 rounded-full text-[10px] font-black text-stone-500 uppercase tracking-widest flex items-center gap-2">
-                    <i data-lucide="shield-check" class="w-3 h-3"></i> Protocolo de Segurança
-                </div>
-                
-                <h4 class="text-center font-black text-stone-800 text-sm mb-6 uppercase tracking-tight text-center">Visita ao Arthur</h4>
-                
-                <div class="space-y-6">
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-600 shrink-0">
-                            <i data-lucide="ban" class="w-5 h-5"></i>
-                        </div>
-                        <div class="text-[11px] text-stone-500 leading-relaxed text-left">
-                            <span class="font-black text-stone-700 uppercase">Sem Beijinhos:</span><br>
-                            Não beijem o rosto ou as mãos do Arthur.
-                        </div>
+            <div class="bg-white border-2 border-dashed border-stone-200 rounded-[2.5rem] p-7 text-center">
+                <h4 class="font-black text-stone-800 text-sm mb-4 uppercase tracking-tight">Manual de Visita</h4>
+                <div class="space-y-4 text-left">
+                    <div class="flex gap-4 items-center">
+                        <div class="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center text-stone-600 shrink-0"><i data-lucide="ban" class="w-4 h-4"></i></div>
+                        <p class="text-[11px] text-stone-500 font-medium"><strong>Sem beijos:</strong> Por favor, nada de beijar o Arthur.</p>
                     </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-600 shrink-0">
-                            <i data-lucide="hand" class="w-5 h-5"></i>
-                        </div>
-                        <div class="text-[11px] text-stone-500 leading-relaxed text-left">
-                            <span class="font-black text-stone-700 uppercase">Higiene:</span><br>
-                            Lavar as mãos ao chegar. Teremos álcool disponível.
-                        </div>
+                    <div class="flex gap-4 items-center">
+                        <div class="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center text-stone-600 shrink-0"><i data-lucide="hand" class="w-4 h-4"></i></div>
+                        <p class="text-[11px] text-stone-500 font-medium"><strong>Higiene:</strong> Lavar bem as mãos ao chegar na base.</p>
                     </div>
                 </div>
             </div>
@@ -190,165 +167,168 @@
 
         <!-- Games -->
         <section class="p-6 pt-0 space-y-4">
-            <div class="bg-stone-800 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden text-center">
-                <p class="text-sm font-bold mb-4">Qual é o signo do Arthur (Nasc. 24/12)?</p>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="checkQuiz(true, this)" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black transition-all border border-white/20">Capricórnio</button>
-                    <button onclick="checkQuiz(false, this)" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black transition-all border border-white/20">Aquário</button>
+            <div class="bg-stone-800 rounded-[2rem] p-6 text-white text-center shadow-lg relative overflow-hidden">
+                <p class="text-xs font-bold mb-4">Qual é o signo do Arthur (Nasc. 24/12)?</p>
+                <div class="grid grid-cols-2 gap-3" id="quiz-options">
+                    <button onclick="window.checkQuiz(true, this)" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black border border-white/20">Capricórnio</button>
+                    <button onclick="window.checkQuiz(false, this)" class="p-3 bg-white/10 hover:bg-white/20 rounded-2xl text-xs font-black border border-white/20">Aquário</button>
                 </div>
-                <div id="quiz-result" class="hidden text-[10px] font-black mt-4 uppercase text-amber-200">
-                    ✨ Success: Capricórnio detetado! ♑
-                </div>
+                <p id="quiz-result" class="hidden text-[10px] font-black mt-4 uppercase text-amber-200">✨ Success: Capricórnio detetado! ♑</p>
             </div>
 
             <div class="bg-white border border-stone-100 rounded-[2rem] p-6 text-center shadow-sm">
-                <p class="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-4">Monitor de Energia (Fome)</p>
-                <div class="h-8 bg-stone-50 rounded-2xl p-1.5 border border-stone-100 mb-6">
-                    <div id="power-bar" class="h-full bg-stone-700 rounded-xl transition-all duration-500 progress-pixel" style="width: 20%"></div>
+                <p class="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-4">Nível de Fome</p>
+                <div class="h-6 bg-stone-50 rounded-xl p-1 border border-stone-100 mb-4">
+                    <div id="power-bar" class="h-full bg-stone-700 rounded-lg transition-all duration-500 progress-pixel" style="width: 20%"></div>
                 </div>
-                <button onclick="boostPower()" class="w-full py-4 bg-stone-800 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] active:scale-95 transition-all shadow-lg">
-                    Elevar o meu KI
+                <button onclick="window.boostPower()" class="w-full py-4 bg-stone-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest active:scale-95 shadow-md">
+                    Elevar KI
                 </button>
-                <p id="power-text" class="text-[10px] font-bold text-stone-400 mt-3 uppercase italic">Nível de Fome: Baixo</p>
+                <p id="power-text" class="text-[10px] font-bold text-stone-400 mt-2 italic uppercase">Ki Status: Baixo</p>
             </div>
         </section>
 
         <!-- RSVP -->
         <section class="p-6">
-            <div class="bg-stone-100 rounded-[3rem] p-8 text-stone-800 relative overflow-hidden border border-stone-200">
-                <div class="relative z-10 text-center">
-                    <h3 class="text-xs font-black text-stone-500 uppercase tracking-widest mb-6 italic text-center text-center">Confirmar Missão</h3>
-                    <div id="rsvp-form-box" class="space-y-4">
-                        <input type="text" id="guest-name" placeholder="Insira o seu Nome" class="w-full p-5 bg-white border border-stone-200 rounded-3xl focus:border-stone-800 outline-none text-sm font-bold text-stone-800 placeholder:text-stone-300 text-center">
-                        <button onclick="sendRSVP()" class="w-full bg-stone-800 text-white font-black py-5 rounded-3xl shadow-xl transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
-                            <i data-lucide="check-circle-2" class="text-stone-200"></i> Confirmar Presença
-                        </button>
-                    </div>
-                    <div id="rsvp-success" class="hidden py-4 text-center">
-                        <div class="w-14 h-14 bg-stone-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i data-lucide="check" class="text-white w-8 h-8"></i>
-                        </div>
-                        <h4 class="text-stone-900 font-black text-lg uppercase mb-1">Missão Aceite!</h4>
-                        <p class="text-stone-500 text-[10px] font-bold uppercase tracking-widest">A abrir o WhatsApp...</p>
-                    </div>
+            <div class="bg-stone-100 rounded-[3rem] p-8 text-center border border-stone-200">
+                <h3 class="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-6 italic">Acesso à Base 101</h3>
+                <div id="rsvp-form-box" class="space-y-4">
+                    <input type="text" id="guest-name" placeholder="Insira o seu Nome" class="w-full p-4 bg-white border border-stone-200 rounded-2xl focus:border-stone-800 outline-none text-sm font-bold text-stone-800 text-center">
+                    <button onclick="window.sendRSVP()" class="w-full bg-stone-800 text-white font-black py-5 rounded-3xl shadow-xl transition-all active:scale-95 uppercase tracking-widest text-xs">
+                        Confirmar Presença
+                    </button>
+                </div>
+                <div id="rsvp-success" class="hidden py-4 animate-bounce">
+                    <i data-lucide="check-circle" class="w-10 h-10 text-stone-800 mx-auto mb-2"></i>
+                    <h4 class="text-stone-900 font-black text-lg uppercase">Confirmado!</h4>
+                    <p class="text-stone-500 text-[10px] font-bold uppercase tracking-widest">A abrir o WhatsApp...</p>
                 </div>
             </div>
         </section>
 
-        <!-- Waze -->
-        <section class="p-6 space-y-4">
-            <div class="bg-stone-50 rounded-[2.5rem] p-7 border border-stone-100">
-                <div class="flex items-center gap-5 mb-6">
-                    <div class="w-14 h-14 bg-white rounded-3xl flex items-center justify-center text-stone-700 shadow-sm border border-stone-100 shrink-0">
-                        <i data-lucide="map-pin" class="w-7 h-7"></i>
-                    </div>
-                    <div class="text-left">
-                        <p class="text-[10px] font-black text-stone-400 uppercase tracking-widest">Coordenadas</p>
-                        <p class="font-black text-stone-800 text-sm italic">Rua Anacleto, 101</p>
-                        <p class="text-stone-600 font-black text-xs uppercase mt-0.5 leading-none">Vila Isolina Mazzei - Apto 13</p>
+        <!-- Localização -->
+        <section class="p-6 space-y-4 text-center">
+            <div class="bg-stone-50 rounded-[2.5rem] p-7 border border-stone-100 text-left">
+                <div class="flex items-center gap-5">
+                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-stone-700 shadow-sm border border-stone-100 shrink-0"><i data-lucide="map-pin"></i></div>
+                    <div>
+                        <p class="text-[10px] font-black text-stone-400 uppercase tracking-widest leading-none mb-1">Coordenadas</p>
+                        <p class="font-black text-stone-800 text-sm leading-tight">Rua Anacleto, 101</p>
+                        <p class="text-stone-600 font-bold text-[10px] uppercase">V. Isolina Mazzei - Apto 13</p>
                     </div>
                 </div>
-                <a href="https://waze.com/ul?q=Rua%20Anacleto%20101%20Vila%20Isolina%20Mazzei" target="_blank" class="w-full bg-white text-stone-800 font-black text-[10px] uppercase py-4 rounded-2xl flex items-center justify-center gap-2 active:scale-95 shadow-sm border border-stone-200 tracking-widest">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Waze_icon.svg" class="w-4 h-4" alt="Waze">
-                    Navegar via Waze
+                <a href="https://waze.com/ul?q=Rua%20Anacleto%20101%20Vila%20Isolina%20Mazzei" target="_blank" class="w-full bg-white text-stone-800 font-black text-[10px] uppercase py-4 rounded-2xl flex items-center justify-center gap-2 mt-6 active:scale-95 shadow-sm border border-stone-200">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Waze_icon.svg" class="w-4 h-4" alt="Waze"> Waze
                 </a>
             </div>
-            <p class="text-center text-stone-300 text-[9px] font-black uppercase tracking-[0.4em] mt-8 baby-font text-center">Incendeie o seu coração na Casa 101</p>
+            <p class="text-slate-300 text-[9px] font-black uppercase tracking-[0.4em] mt-8 baby-font">Incendeie o seu coração na Casa 101</p>
         </section>
     </div>
 
-    <!-- Scripts de Lógica -->
+    <!-- LOGICA PURA EM JAVASCRIPT -->
     <script>
-        // Inicialização do Firebase Compat
-        const firebaseConfig = JSON.parse(__firebase_config);
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'portal-eventos-casa-101';
+        // CONFIGURAR AS DATAS
+        const ARTHUR_BIRTH = new Date("2025-12-24T21:05:00").getTime();
+        const EVENT_DATE = new Date("2026-03-14T12:30:00").getTime();
 
-        // Autenticação Anônima
-        auth.signInAnonymously().catch(e => console.error("Firebase Login Error", e));
-
-        // --- RELÓGIOS ---
-        const birthDate = new Date("2025-12-24T21:05:00").getTime();
-        const eventDate = new Date("2026-03-14T12:30:00").getTime();
-
-        function updateTimers() {
+        // FUNÇÃO DO RELÓGIO (INICIA IMEDIATAMENTE)
+        function startTick() {
             const now = new Date().getTime();
 
-            // Uptime do Arthur
-            const lifeDiff = now - birthDate;
-            document.getElementById('life-days').innerText = Math.floor(lifeDiff / (1000 * 60 * 60 * 24));
-            document.getElementById('life-hours').innerText = String(Math.floor((lifeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-            document.getElementById('life-mins').innerText = String(Math.floor((lifeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-            document.getElementById('life-secs').innerText = String(Math.floor((lifeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+            // 1. Arthur Life Timer
+            const lifeDiff = now - ARTHUR_BIRTH;
+            const lD = Math.floor(lifeDiff / (1000 * 60 * 60 * 24));
+            const lH = Math.floor((lifeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const lM = Math.floor((lifeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const lS = Math.floor((lifeDiff % (1000 * 60)) / 1000);
 
-            // Countdown para o Churrasco
-            const eventDiff = eventDate - now;
-            const eventEl = document.getElementById('event-countdown');
+            document.getElementById('life-days').innerText = lD;
+            document.getElementById('life-hours').innerText = String(lH).padStart(2, '0');
+            document.getElementById('life-mins').innerText = String(lM).padStart(2, '0');
+            document.getElementById('life-secs').innerText = String(lS).padStart(2, '0');
+
+            // 2. Event Countdown
+            const eventDiff = EVENT_DATE - now;
             if (eventDiff > 0) {
-                document.getElementById('event-days').innerText = Math.floor(eventDiff / (1000 * 60 * 60 * 24));
-                document.getElementById('event-hours').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-                document.getElementById('event-mins').innerText = String(Math.floor((eventDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                document.getElementById('event-secs').innerText = String(Math.floor((eventDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+                const eD = Math.floor(eventDiff / (1000 * 60 * 60 * 24));
+                const eH = Math.floor((eventDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const eM = Math.floor((eventDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const eS = Math.floor((eventDiff % (1000 * 60)) / 1000);
+
+                document.getElementById('event-days').innerText = eD;
+                document.getElementById('event-hours').innerText = String(eH).padStart(2, '0');
+                document.getElementById('event-mins').innerText = String(eM).padStart(2, '0');
+                document.getElementById('event-secs').innerText = String(eS).padStart(2, '0');
             } else {
-                eventEl.innerHTML = "<p class='text-stone-600 font-black italic baby-font'>BORA COMER! 🔥</p>";
+                document.getElementById('event-timer-container').innerHTML = "<p class='text-orange-600 font-black italic baby-font'>QUEST COMPLETA - BORA COMER! 🔥</p>";
             }
         }
 
-        // Loop principal do relógio
-        setInterval(updateTimers, 1000);
-        updateTimers();
+        // RODAR AO CARREGAR O DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            setInterval(startTick, 1000);
+            startTick();
+            lucide.createIcons();
+            
+            // Inicializar Firebase
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                firebase.initializeApp(firebaseConfig);
+                window.db = firebase.firestore();
+                firebase.auth().signInAnonymously();
+            } catch (e) { console.error("Firebase Init Error", e); }
+        });
 
-        // --- INTERAÇÕES GLOBAIS ---
-        function addToGoogleCalendar() {
-            const baseUrl = "https://www.google.com/calendar/render?action=TEMPLATE";
+        // FUNÇÕES GLOBAIS (window. para garantir acesso via onclick)
+        window.addToGoogleCalendar = function() {
             const event = {
                 text: "Churras do Tutu - Casa 101",
                 dates: "20260314T153000Z/20260314T213000Z",
-                details: "Churrasco do Arthur! 👶🔥\n\nProtocolos:\n- Não beijar o bebê.\n- Higiene das mãos.",
+                details: "Celebração do Arthur! Protocolos: Não beijar o bebê e higiene das mãos.",
                 location: "Rua Anacleto, 101, Vila Isolina Mazzei, São Paulo, SP",
             };
-            const url = baseUrl + "&text=" + encodeURIComponent(event.text) + "&dates=" + event.dates + "&details=" + encodeURIComponent(event.details) + "&location=" + encodeURIComponent(event.location);
+            const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.text)}&dates=${event.dates}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
             window.open(url, '_blank');
-        }
+        };
 
-        function checkQuiz(isCorrect, btn) {
+        window.checkQuiz = function(isCorrect, btn) {
             if (isCorrect) {
                 btn.style.backgroundColor = "#5d4037";
                 btn.style.color = "white";
                 document.getElementById('quiz-result').classList.remove('hidden');
+                document.getElementById('quiz-options').style.pointerEvents = 'none';
             } else {
                 btn.style.backgroundColor = "#d7ccc8";
                 setTimeout(() => btn.style.backgroundColor = "", 500);
             }
-        }
+        };
 
-        let kiLevel = 20;
-        function boostPower() {
-            kiLevel += 20;
-            if (kiLevel > 100) kiLevel = 100;
+        window.kiLevel = 20;
+        window.boostPower = function() {
+            window.kiLevel += 20;
+            if (window.kiLevel > 100) window.kiLevel = 100;
             const bar = document.getElementById('power-bar');
             const txt = document.getElementById('power-text');
-            bar.style.width = kiLevel + '%';
-            if (kiLevel >= 100) {
-                txt.innerText = "Nível de Fome: MAIS DE 8.000!!!";
+            bar.style.width = window.kiLevel + '%';
+            if (window.kiLevel >= 100) {
+                txt.innerText = "STATUS: MAIS DE 8.000!!!";
                 bar.style.backgroundColor = "#292524";
-            } else if (kiLevel > 60) {
-                txt.innerText = "Nível de Fome: ÉPICO";
+            } else if (window.kiLevel > 60) {
+                txt.innerText = "KI STATUS: ÉPICO";
             }
-        }
+        };
 
-        async function sendRSVP() {
+        window.sendRSVP = async function() {
             const nameEl = document.getElementById('guest-name');
             const name = nameEl.value.trim();
-            if (!name) return alert("Insira o seu nome!");
+            if (!name) return alert("Insira o seu nome, soldado!");
 
             try {
-                // Caminho rigoroso para dados públicos do artefato
-                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('rsvps').add({
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'portal-eventos-casa-101';
+                // Caminho Firestore
+                await window.db.collection('artifacts').doc(appId).collection('public').doc('data').collection('rsvps').add({
                     userName: name,
-                    kiLevel: kiLevel,
+                    kiLevel: window.kiLevel,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
@@ -356,17 +336,12 @@
                 document.getElementById('rsvp-success').classList.remove('hidden');
 
                 const phone = "5511983929914";
-                const text = encodeURIComponent("Confirmado no Churras do Tutu!\nNome: " + name + "\nKI: " + (kiLevel >= 100 ? "8000+" : kiLevel + "%"));
-                setTimeout(() => window.location.href = "https://wa.me/" + phone + "?text=" + text, 2000);
+                const msg = encodeURIComponent(`[QUEST CONFIRMADA]\nSoldado: ${name}\nFome: ${window.kiLevel >= 100 ? '8000+' : window.kiLevel + '%'}\nEstarei na Base 101 no dia 14! 🔥`);
+                setTimeout(() => window.location.href = `https://wa.me/${phone}?text=${msg}`, 2000);
             } catch (e) {
                 console.error(e);
-                alert("Erro ao gravar. Tente novamente.");
+                alert("Erro ao gravar. Verifique a conexão.");
             }
-        }
-
-        // Inicializar ícones
-        window.onload = function() {
-            lucide.createIcons();
         };
     </script>
 </body>
